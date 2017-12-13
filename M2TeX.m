@@ -25,20 +25,6 @@ M2TeXClear := Module[{},
 (** M2TeXToString for general data types **)
 M2TeXToString[item_] := ToString[item];
 M2TeXToString[item_M2TeXNone] := "";
-M2TeXToString[item_List] := Module[
-	{string = ""},
-	
-	(* Loop over items *)
-	Do[
-		string = string <> M2TeXToString[ item[[i]] ] <> If[i == Length[item], "", ", "];
-	,{i, Length[item]}];
-	
-	(* Return string *)
-	string;
-	
-	"JHJHJHHZTHTHTHTH"
-];
-
 
 
 
@@ -186,7 +172,7 @@ M2TeXSetEnvironment[name_, OptionsPattern[]] := Module[{},
 		(* 1: Name of environment *)
 		name,
 		(* 2: Contents of this environment *)
-		"asdf",
+		{},
 		(* 3: Start Command *)
 		M2TeXSetCommand["begin", "Parameter" -> name],
 		(* 4: End Command *)
@@ -218,7 +204,10 @@ M2TeXToString[item_M2TeXEnvironment] := Module[
 	];
 	
 	(* Write the contents *)
-	string = string <> M2TeXToString[item[[2]]];
+	Do[
+		string = string <> M2TeXToString[content];
+	,{ content, item[[2]]}];
+	
 	
 	(* write new line *)
 	If[item[[6]],
