@@ -3,12 +3,16 @@ BeginPackage["M2TeX`"];
 
 (*Definition of Public Functions and Parameters*)
 M2TeXToString::usage="Returns a string for the M2tex item.";
+M2TeXSetDocument::usage="TODO";
 M2TeXSetEnvironment::usage="TODO";
 M2TeXSetCommand::usage="TODO";
 M2TeXSetPackage::usage="TODO";
 M2TeXSetOption::usage="TODO";
 M2TeXSetOptionalOption::usage="TODO";
 M2TeXSetOptionList::usage="TODO";
+M2TeXDocumentToString::usage="TODO";
+M2TeXAppendToDocument::usage="TODO";
+M2TeXCloseEnvironment::usage="TODO";
 
 
 (*Private Functions*)
@@ -16,10 +20,86 @@ Begin["`Private`"];
 
 
 (* Clear the M2TeX variables*)
-M2TeXClear := Module[{},
-	Clear[M2TeXCurrentEnvironment,M2TeXEnvironmentList,M2TeXPreamble];
-	M2TeXPreamble={};
+M2TeXClear := Clear[
+	m2texDocument,
+	m2texCurrentEnvironment
 ];
+
+
+
+(** M2TeX document **)
+M2TeXSetDocument[] := (
+	M2TeXClear;
+	
+	m2texDocument = M2TeXDocument[
+		(* 1: The document class *)
+		M2TeXSetCommand[
+			"documentclass",
+			"Parameter" -> "scrartcl"
+		],
+		(* 2: Preamble *)
+		1,
+		(* 3: Contents *)
+		M2TeXSetEnvironment["document"]
+	];
+	
+	m2texCurrentEnvironment = {3};
+);
+
+(* M2TeXToString function for document *)
+M2TeXToString[item_M2TeXDocument] := Module[
+	{string},
+	
+	(* add the document class *)
+	string = "% this document was created with M2TeX\n";
+	string = string <> M2TeXToString[item[[1]]];
+	
+	(* add the header*)
+	string = string <> "\n\n% packages and macros\n";
+	
+	(* add the document *)
+	string = string <> M2TeXToString[item[[3]]];
+	
+	(* Return string of item *)
+	string
+];
+
+(* Get document string*)
+M2TeXDocumentToString[] := m2texDocument;
+
+
+(* Add to document tree *)
+M2TeXAppendToDocument[item_] := Module[
+	{fullIndex},
+	
+	(* Get sequence for parts *)
+	fullIndex = Table[
+		{index, 2}
+	,{index, m2texCurrentEnvironment}];
+	fullIndex = fullIndex/.List->Sequence;
+	
+	(* Append new item *)
+	AppendTo[m2texDocument[[fullIndex]], item];
+	
+	(* Check if new item is environment -> advance index list*)
+	If[ MatchQ[item, _M2TeXEnvironment],
+		AppendTo[m2texCurrentEnvironment, Length[ m2texDocument[[fullIndex]] ] ]
+	];
+];
+
+(* Close current environment *)
+M2TeXCloseEnvironment[] := (
+	(* Check if the root item is not closed *)
+	If[Length[m2texCurrentEnvironment] == 1,
+		Print["Root Environment can not be closed!"],
+		m2texCurrentEnvironment = Delete[m2texCurrentEnvironment, Length[m2texCurrentEnvironment]];
+	];
+);
+
+
+
+
+
 
 
 (** M2TeXToString for general data types **)
