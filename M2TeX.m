@@ -9,10 +9,11 @@ M2TeXSetCommand::usage="TODO";
 M2TeXSetPackage::usage="TODO";
 M2TeXSetOption::usage="TODO";
 M2TeXSetOptionalOption::usage="TODO";
-M2TeXSetOptionList::usage="TODO";
+(*M2TeXSetOptionList::usage="TODO";*)
 M2TeXDocumentToString::usage="TODO";
 M2TeXAppendToDocument::usage="TODO";
 M2TeXCloseEnvironment::usage="TODO";
+M2TexAddPreamble::usage="TODO";
 
 
 (*Private Functions*)
@@ -28,17 +29,20 @@ M2TeXClear := Clear[
 
 
 (** M2TeX document **)
-M2TeXSetDocument[] := (
+Options[M2TeXSetDocument] = {
+	"DocumentClass" -> M2TeXSetCommand[
+		"documentclass",
+		"Parameter" -> "scrartcl"
+	]	
+};
+M2TeXSetDocument[OptionsPattern[]] := (
 	M2TeXClear;
 	
 	m2texDocument = M2TeXDocument[
 		(* 1: The document class *)
-		M2TeXSetCommand[
-			"documentclass",
-			"Parameter" -> "scrartcl"
-		],
+		OptionValue["DocumentClass"],
 		(* 2: Preamble *)
-		1,
+		{},
 		(* 3: Contents *)
 		M2TeXSetEnvironment["document"]
 	];
@@ -56,8 +60,13 @@ M2TeXToString[item_M2TeXDocument] := Module[
 	
 	(* add the header*)
 	string = string <> "\n\n% packages and macros\n";
+	Do[
+		string = string <> M2TeXToString[pre];
+		string = string <> "\n";
+	,{pre, item[[2]]}];
 	
 	(* add the document *)
+	string = string <> "\n% document\n";
 	string = string <> M2TeXToString[item[[3]]];
 	
 	(* Return string of item *)
@@ -65,7 +74,7 @@ M2TeXToString[item_M2TeXDocument] := Module[
 ];
 
 (* Get document string*)
-M2TeXDocumentToString[] := m2texDocument;
+M2TeXDocumentToString[] := M2TeXToString[m2texDocument];
 
 
 (* Add to document tree *)
@@ -97,7 +106,14 @@ M2TeXCloseEnvironment[] := (
 );
 
 
-
+(* add to preamble *)
+M2TexAddPreamble[item_M2TeXNone] := None;
+M2TexAddPreamble[item_] := Module[
+	{},
+	
+	AppendTo[m2texDocument[[2]], item];
+	
+];
 
 
 
@@ -184,7 +200,7 @@ Options[M2TeXSetCommand] = {
 	"ParameterList" -> M2TeXNone[],
 	"StartCharacter" -> "\\",
 	"EndCharacter" -> "",
-	"Header" -> {}
+	"Header" -> M2TeXNone[]
 };
 M2TeXSetCommand[name_, OptionsPattern[]] := Module[{},
 	M2TexAddPreamble[OptionValue["Header"]];
@@ -205,7 +221,7 @@ M2TeXSetCommand[name_, OptionsPattern[]] := Module[{},
 		M2TeXSetOptionList[OptionValue["ParameterList"]]
 	]		
 ]
-M2TeXSetPackage[options__] := M2TeXSetCommand["usepackage", options];
+M2TeXSetPackage[packageName_, options_:M2TeXNone[]] := M2TeXSetCommand["usepackage", "Parameter" -> packageName, "OptionalParameter" -> options];
 
 
 (* M2TeXToString function for commands *)
@@ -221,7 +237,6 @@ M2TeXToString[item_M2TeXCommand] := Module[
 		string = string <> M2TeXToString[item[[2]]];
 		,
 		(* option list *)
-		Print[item[[6]]];
 		string = string <> M2TeXToString[item[[6]]];
 	];
 	string = string <> item[[5]];
@@ -241,7 +256,7 @@ M2TeXToString[item_M2TeXCommand] := Module[
 (* General Command Item *)
 Options[M2TeXSetEnvironment] = {
 	"ParameterList" -> False,
-	"Header" -> {},
+	"Header" -> M2TeXNone[],
 	"NewLine" -> True
 };
 M2TeXSetEnvironment[name_, OptionsPattern[]] := Module[{},
@@ -300,6 +315,43 @@ M2TeXToString[item_M2TeXEnvironment] := Module[
 	(* Return string of item *)
 	string
 ];
+
+
+
+
+
+
+
+
+
+(** Define default document environments **)
+M2TeXSetDocument["tikz"] := Module[{},
+	(* define document class *)
+	M2TeXSetDocument[
+		"DocumentClass" -> M2TeXSetCommand[
+			"documentclass",
+			"ParameterList" -> {
+				M2TeXSetOptionalOption["class=scrartcl"],
+				M2TeXSetOption["standalone"]
+			}
+		]
+	];
+	
+	(* add to header *)
+	M2TexAddPreamble[M2TeXSetPackage["fontenc", "T1"]];
+	M2TexAddPreamble[M2TeXSetPackage["inputenc", "utf8"]];
+	M2TexAddPreamble[M2TeXSetPackage["amsmath"]];
+	M2TexAddPreamble[M2TeXSetPackage["tikz"]];
+	M2TexAddPreamble[M2TeXSetPackage["pgfplots"]];
+	M2TexAddPreamble[M2TeXSetCommand[
+		"pgfplotsset",
+		"Parameter" -> "compat=newest,tick label style={font=\\footnotesize}"
+		]];
+];
+
+
+
+
 
 
 
