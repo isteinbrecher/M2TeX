@@ -3,9 +3,12 @@ BeginPackage["M2TeX`"];
 
 (*Definition of Public Functions and Parameters*)
 M2TeXToString::usage="Returns a string for the M2tex item.";
+M2TeXSetEnvironment::usage="TODO";
 M2TeXSetCommand::usage="TODO";
+M2TeXSetPackage::usage="TODO";
 M2TeXSetOption::usage="TODO";
 M2TeXSetOptionalOption::usage="TODO";
+M2TeXSetOptionList::usage="TODO";
 
 
 (*Private Functions*)
@@ -31,13 +34,30 @@ M2TeXToString[item_List] := Module[
 	,{i, Length[item]}];
 	
 	(* Return string *)
-	string
+	string;
+	
+	"JHJHJHHZTHTHTHTH"
 ];
 
 
 
 
 (** Options structure **)
+
+(* To text function for options (the list overload is different ) *)
+M2TeXToStringOptions[item_] := M2TeXToString[item];
+M2TeXToStringOptions[item_List] := Module[
+	{string = ""},
+	
+	(* Loop over items *)
+	Do[
+		string = string <> M2TeXToString[ item[[i]] ] <> If[i == Length[item], "", ", "];
+	,{i, Length[item]}];
+	
+	(* Return string *)
+	string
+];
+
 
 (* General Options Item *)
 Options[M2TeXSetOption] = {
@@ -49,14 +69,14 @@ M2TeXSetOption[options_, OptionsPattern[]] := M2TeXOption[
 	(* 2: Open and Close characters for the ToString function *)
 	OptionValue["OpenCloseCharacter"]
 ];
-M2TeXSetOption[options_M2TeXNone] := M2TeXNone[];
+M2TeXSetOption[options_M2TeXNone, OptionsPattern[]] := M2TeXNone[];
 
 (* M2TeXToString function for commands *)
 M2TeXToString[item_M2TeXOption] := Module[
 	{string},
 	
 	(* get the string for the option *)
-	string = item[[2,1]] <> M2TeXToString[item[[1]]] <> item[[2,2]];
+	string = item[[2,1]] <> M2TeXToStringOptions[item[[1]]] <> item[[2,2]];
 	
 	(* Return string of item *)
 	string
@@ -66,13 +86,36 @@ M2TeXToString[item_M2TeXOption] := Module[
 M2TeXSetOptionalOption[options_] := M2TeXSetOption[options, "OpenCloseCharacter" -> {"[","]"}];
 
 
+
+(** Options list **)
+M2TeXSetOptionList[options_] := M2TeXOptionList[
+	(* 1: Option List in this item *)
+	options
+];
+M2TeXSetOptionList[options_M2TeXNone] := False;
+
+(* M2TeXToString function for option lists *)
+M2TeXToString[item_M2TeXOptionList] := Module[
+	{string = ""},
+	
+	(* option list *)
+	Do[
+		string = string <> M2TeXToString[par];
+	,{par, item[[1]]}];
+	
+	(* Return string of item *)
+	string
+];
+
+
+
 (** Command structure **)
 
 (* General Command Item *)
 Options[M2TeXSetCommand] = {
 	"Parameter" -> M2TeXNone[],
 	"OptionalParameter" -> M2TeXNone[],
-	"ParameterList" -> False,
+	"ParameterList" -> M2TeXNone[],
 	"StartCharacter" -> "\\",
 	"EndCharacter" -> "",
 	"Header" -> {}
@@ -93,9 +136,11 @@ M2TeXSetCommand[name_, OptionsPattern[]] := Module[{},
 		(* 5: End character *)
 		OptionValue["EndCharacter"],
 		(* 6: Multiple Options *)
-		OptionValue["ParameterList"]
+		M2TeXSetOptionList[OptionValue["ParameterList"]]
 	]		
 ]
+M2TeXSetPackage[options__] := M2TeXSetCommand["usepackage", options];
+
 
 (* M2TeXToString function for commands *)
 M2TeXToString[item_M2TeXCommand] := Module[
@@ -106,13 +151,12 @@ M2TeXToString[item_M2TeXCommand] := Module[
 	
 	(* get the options *)
 	If[ item[[6]] === False ,
-		string = string <> M2TeXToString[item[[2]]];
 		string = string <> M2TeXToString[item[[3]]];
+		string = string <> M2TeXToString[item[[2]]];
 		,
 		(* option list *)
-		Do[
-			string = string <> M2TeXToString[par];
-		,{par, item[[6]]}];
+		Print[item[[6]]];
+		string = string <> M2TeXToString[item[[6]]];
 	];
 	string = string <> item[[5]];
 	
@@ -121,16 +165,75 @@ M2TeXToString[item_M2TeXCommand] := Module[
 ];
 
 
-Options[M2TexSetCommand]={"Parameter"->{},"OptionalParameter"->{},"EndCharacter"->"","StartCharacter"->"\\","Type"->M2TexCommand,"Header"->{}};
-M2TexSetCommand[name_,OptionsPattern[]]:=Module[{},
-M2TexAddPreamble[OptionValue["Header"]];
-OptionValue["Type"][
-name,(* Name of environment *)
-If[M2TexParameter===Head@OptionValue["Parameter"],OptionValue["Parameter"],M2TexParameter[{{2,OptionValue["OptionalParameter"]},{1,OptionValue["Parameter"]}}]],(* Parameters and optional parameters *)
-{OptionValue["StartCharacter"]},(* Character at the start of the command *)
-{OptionValue["EndCharacter"]}(* Character at the end of the command *)
+
+
+
+
+
+(** Environment structure **)
+
+(* General Command Item *)
+Options[M2TeXSetEnvironment] = {
+	"ParameterList" -> False,
+	"Header" -> {},
+	"NewLine" -> True
+};
+M2TeXSetEnvironment[name_, OptionsPattern[]] := Module[{},
+	M2TexAddPreamble[OptionValue["Header"]];
+	
+	(* return the command item *)
+	M2TeXEnvironment[
+		(* 1: Name of environment *)
+		name,
+		(* 2: Contents of this environment *)
+		"asdf",
+		(* 3: Start Command *)
+		M2TeXSetCommand["begin", "Parameter" -> name],
+		(* 4: End Command *)
+		M2TeXSetCommand["end", "Parameter" -> name],
+		(* 5: Options List *)
+		If[False === OptionValue["ParameterList"],
+			"",
+			M2TeXSetOptionList[OptionValue["ParameterList"]]
+		],
+		(* 6: If newline should be made after the begin command *)
+		OptionValue["NewLine"]
+	]		
 ]
-]
+
+
+(* M2TeXToString function for commands *)
+M2TeXToString[item_M2TeXEnvironment] := Module[
+	{string},
+	
+	(* start the environment *)
+	string = M2TeXToString[item[[3]]];
+	
+	(* add the parameters *)
+	string = string <> M2TeXToString[item[[5]]];
+	
+	(* write new line *)
+	If[item[[6]],
+		string = string <> "\n";
+	];
+	
+	(* Write the contents *)
+	string = string <> M2TeXToString[item[[2]]];
+	
+	(* write new line *)
+	If[item[[6]],
+		string = string <> "\n";
+	];
+	
+	(* end the environment*)
+	string = string <> M2TeXToString[item[[4]]];
+
+	(* Return string of item *)
+	string
+];
+
+
+
 
 
 
