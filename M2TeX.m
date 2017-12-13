@@ -14,6 +14,8 @@ M2TeXDocumentToString::usage="TODO";
 M2TeXAppendToDocument::usage="TODO";
 M2TeXCloseEnvironment::usage="TODO";
 M2TexAddPreamble::usage="TODO";
+M2TeXGeneratePdf::usage="TODO";
+M2TeXSetPlot::usage="TODO";
 
 
 (*Private Functions*)
@@ -301,6 +303,7 @@ M2TeXToString[item_M2TeXEnvironment] := Module[
 	(* Write the contents *)
 	Do[
 		string = string <> M2TeXToString[content];
+		string = string <> "\n";
 	,{ content, item[[2]]}];
 	
 	
@@ -315,6 +318,48 @@ M2TeXToString[item_M2TeXEnvironment] := Module[
 	(* Return string of item *)
 	string
 ];
+
+
+
+
+
+
+
+
+
+(** Plots **)
+
+(* General Plot Item *)
+Options[M2TeXSetPlot] = {
+	"AddPlot" -> False
+};
+M2TeXSetPlot[table_, par_:M2TeXNone[], OptionsPattern[]] := Module[
+	{
+		temp
+	},
+	
+	temp = M2TeXSetCommand[
+		If[ OptionValue["AddPlot"], "addplot+", "addplot"],
+		"OptionalParameter" -> par
+	];
+	
+	M2TeXPlot[temp, table]
+]
+M2TeXToString[item_M2TeXPlot]:=Module[
+	{string},
+	
+	string = M2TeXToString[item[[1]]];
+	string = string <> " coordinates{%\n";
+	Do[
+		string = string <> "(" <> ToString[N[itemCoord[[1]]],CForm] <> "," <> ToString[N[itemCoord[[2]]],CForm] <> ")%\n";
+	,{ itemCoord, item[[2]] }];
+	string = string <> "};%";
+	
+	(* return string *)
+	string
+]
+
+
 
 
 
@@ -348,6 +393,65 @@ M2TeXSetDocument["tikz"] := Module[{},
 		"Parameter" -> "compat=newest,tick label style={font=\\footnotesize}"
 		]];
 ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(** Create the pdf file **)
+Options[M2TeXGeneratePdf] = {
+	"ShowLog" -> False,
+	"CleanTex" -> True
+};
+M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
+	{
+		out,
+		extensions = {".log",".aux"}
+	},
+	
+	(* Save the string to *.tex file *)
+	Export[name<>".tex", M2TeXDocumentToString[], "Text"];
+	
+	(* Execute the LaTeX command*)
+	out = Run["pdflatex --interaction=nonstopmode " <> name <> ".tex"];
+	
+	(* Check if process was sucsessfull *)
+	If[ out != 0, Print["Error in LaTeX"]; ];
+
+	(* Print output *)
+	If[OptionValue["ShowLog"],FilePrint[name<>".log"]];
+
+	(* Delte auxilliary files *)
+	If[ OptionValue["CleanTex"],
+		extensions = AppendTo[extensions,".tex"]
+	];
+	DeleteFile[MapThread[StringJoin,{Table[name,Length[extensions]],extensions}]];
+	
+	(* Load the pdf file *)
+	Import[name <> ".pdf"]
+];
+
+
+
+
+
+
+
+
+
+
 
 
 
