@@ -441,21 +441,27 @@ Options[M2TeXGeneratePdf] = {
 };
 M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 	{
+		texFile,
+		pdfFile,
 		out,
 		extensions = {".log",".aux",".bbl",".blg"}
 	},
 	
+	(* set the filenames *)
+	texFile = FileNameJoin[{ Directory[], name <> ".tex" }];
+	pdfFile = FileNameJoin[{ Directory[], name <> ".pdf" }]; 
+	
 	(* Save the string to *.tex file *)
-	Export[name<>".tex", M2TeXDocumentToString[], "Text"];
+	Export[ texFile, M2TeXDocumentToString[], "Text" ];
 	
 	(* Execute the LaTeX command*)
-	out = Run["pdflatex --interaction=nonstopmode " <> name <> ".tex"];
+	out = Run["pdflatex --interaction=nonstopmode " <> texFile ];
 	
 	(* Check if process was sucsessfull *)
 	If[ out != 0, Print["Error in LaTeX"]; ];
 
 	(* Print output *)
-	If[OptionValue["ShowLog"],FilePrint[name<>".log"]];
+	If[ OptionValue["ShowLog"], FilePrint[name<>".log"]];
 
 	(* Delte auxilliary files *)
 	If[ OptionValue["CleanTex"],
@@ -463,8 +469,14 @@ M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 	];
 	DeleteFile[MapThread[StringJoin,{Table[name,Length[extensions]],extensions}]];
 	
+	(* Convert the pdf to png in the temporary directory *)
+	gs = "C:\\Program Files\\gs\\gs9.20\\bin\\gswin64c.exe";
+	RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", "C:\\Users\\Steinbrecher\\AppData\\Local\\Temp\\plot-%03d.png",
+		pdfFile
+		}];
+	
 	(* Load the pdf file *)
-	Import[name <> ".pdf"]
+	Import["C:\\Users\\Steinbrecher\\AppData\\Local\\Temp\\plot-001.png"]
 ];
 
 
