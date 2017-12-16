@@ -22,6 +22,30 @@ M2TeXSetPlot::usage="TODO";
 Begin["`Private`"];
 
 
+
+
+
+
+(********* Helper and compatibility functions *********)
+
+(*True if file exists and is not a directory*)
+fileQ[file_] := FileType[file] === File
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (* Clear the M2TeX variables*)
 M2TeXClear := Clear[
 	m2texDocument,
@@ -135,7 +159,7 @@ M2TeXToStringOptions[item_List] := Module[
 	
 	(* Loop over items *)
 	Do[
-		string = string <> M2TeXToString[ item[[i]] ] <> If[i == Length[item], "", ", "];
+		string = string <> M2TeXToStringOptions[ item[[i]] ] <> If[i == Length[item], "", ", "];
 	,{i, Length[item]}];
 	
 	(* Return string *)
@@ -418,7 +442,7 @@ Options[M2TeXGeneratePdf] = {
 M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 	{
 		out,
-		extensions = {".log",".aux"}
+		extensions = {".log",".aux",".bbl",".blg"}
 	},
 	
 	(* Save the string to *.tex file *)
