@@ -2,24 +2,8 @@
 BeginPackage["M2TeX`"];
 
 (*Definition of Public Functions and Parameters*)
-M2TeXToString::usage="Returns a string for the M2tex item.";
-M2TeXSetDocument::usage="TODO";
-M2TeXSetEnvironment::usage="TODO";
-M2TeXSetCommand::usage="TODO";
-M2TeXSetPackage::usage="TODO";
-M2TeXSetOption::usage="TODO";
-M2TeXSetOptionalOption::usage="TODO";
-(*M2TeXSetOptionList::usage="TODO";*)
-M2TeXDocumentToString::usage="TODO";
-M2TeXAppendToDocument::usage="TODO";
-M2TeXCloseEnvironment::usage="TODO";
-M2TexAddPreamble::usage="TODO";
-M2TeXGeneratePdf::usage="TODO";
-M2TeXSetPlot::usage="TODO";
 
-
-
-
+M2TeXToString::usage="TODO";
 
 M2TeXOption::usage="TODO";
 M2TeXOptionOptional::usage="TODO";
@@ -31,6 +15,17 @@ M2TeXEnvironment::usage="TODO";
 
 M2TeXAddToEnvironment::usage="TODO";
 M2TeXCloseActiveEnvironment::usage="TODO";
+
+M2TeXSetGlobal::usage="TODO";
+M2TeXToStringGlobal::usage="TODO";
+
+M2TeXTemplates::usage="TODO";
+
+M2TeXTikZCommand::usage="TODO";
+M2TeXTikZAxis::usage="TODO";
+M2TeXTikZPlot::usage="TODO";
+
+
 
 (*Private Functions*)
 Begin["`Private`"];
@@ -504,20 +499,6 @@ M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 M2TeXToString[item_] := ToString[item];
 M2TeXToString[None] := "";
 
-(*** For options ***)
-M2TeXToStringOptions[item_] := M2TeXToString[item];
-M2TeXToStringOptions[item_List] := Module[
-	{string = ""},
-	
-	(* Loop over items *)
-	Do[
-		string = string <> M2TeXToStringOptions[ item[[i]] ] <> If[i == Length[item], "", ", "];
-	,{i, Length[item]}];
-	
-	(* Return string *)
-	string
-];
-
 
 
 
@@ -533,10 +514,23 @@ M2TeXOption[options_, OptionsPattern[]] := M2TOption[<|
 ];
 
 (*** ToString function ***)
-M2TeXToString[item_M2TOption] := Module[{data},
-	data = item[[1]];
-	(* return string *)
-	data[["OpenCloseCharacter",1]] <> M2TeXToStringOptions[data[["Options"]]] <> data[["OpenCloseCharacter",2]]
+M2TeXToString[M2TOption[data_]] := Module[
+	{
+		string = "",
+		list
+	},
+	
+	string = data[["OpenCloseCharacter",1]];
+	
+	(* add contents *)
+	list = Flatten[ {data[["Options"]]} ];
+	Do[
+		string = string <> M2TeXToString[ list[[i]] ] <> If[i == Length[list], "", ", "];
+	,{i, Length[list]}];
+	
+	string = string <> data[["OpenCloseCharacter",2]];
+
+	string
 ];
 
 (*** Overload constructor ***)
@@ -552,13 +546,13 @@ M2TeXOptionList[list_] := M2TOptionList[list];
 M2TeXOptionList[None] := None;
 
 (*** Overload the ToString function ***)
-M2TeXToString[item_M2TOptionList] := Module[
+M2TeXToString[M2TOptionList[data_]] := Module[
 	{string = ""},
 	
 	(* option list *)
 	Do[
 		string = string <> M2TeXToString[par];
-	,{par, item[[1]]}];
+	,{par, data}];
 	
 	(* Return string of item *)
 	string
@@ -590,8 +584,7 @@ M2TeXCommand[name_, OptionsPattern[]] := (
 )
 
 (*** ToString function ***)
-M2TeXToString[item_M2TCommand] := Module[{data, string},
-	data = item[[1]];
+M2TeXToString[M2TCommand[data_]] := Module[{string},
 	
 	(* Command itself *)
 	string = data["StartCharacter"] <> data["Name"];
@@ -630,24 +623,33 @@ M2TeXPackage[packageName_, options_:None] := M2TeXCommand["usepackage", packageN
 (*** Definition of item ***)
 Options[M2TeXEnvironment] = {
 	"ParameterList" -> None,
+	"StartCommand" -> None,
+	"EndCommand" -> None,
 	"Header" -> None
 };
 M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 	M2TexAddPreamble[OptionValue["Header"]];
 	M2TEnvironment[<|
 		"Name" -> name,
-		"StartCommand" -> M2TeXCommand["begin", name],
-		"EndCommand" -> M2TeXCommand["end", name],
+		"StartCommand" -> If[
+			OptionValue["StartCommand"] === None,
+			M2TeXCommand["begin", name],
+			OptionValue["StartCommand"]
+		],
+		"EndCommand" -> If[
+			OptionValue["EndCommand"] === None,
+			M2TeXCommand["end", name],
+			OptionValue["EndCommand"]
+		],
 		"OptionList" -> M2TeXOptionList[OptionValue["ParameterList"]],
 		"Content" -> {},
 		"ActiveContent" -> Sequence[1, Key["Content"]]
-	|>]		
+	|>]
 ]
 
 (*** ToString function ***)
-M2TeXToString[item_M2TEnvironment] := Module[
-	{string, data},
-	data = item[[1]];
+M2TeXToString[M2TEnvironment[data_]] := Module[
+	{string},
 	
 	(* start the environment *)
 	string = M2TeXToString[data["StartCommand"]];
@@ -717,53 +719,166 @@ M2TeXCloseActiveEnvironment[parent_] := Module[
 	];
 ];
 
+(*** Overloads for document ***)
+M2TeXAddToEnvironment[content_] := M2TeXAddToEnvironment[M2Tdocument, content]; 
+M2TeXCloseActiveEnvironment[] := M2TeXCloseActiveEnvironment[M2Tdocument];
 
 
 
 
+(********* Global document items *********)
+M2TeXToStringGlobal[] := M2TeXToString[M2Tdocument];
+M2TeXSetGlobal[item_] := Module[{}, M2Tdocument = item;];
+M2TeXSetGlobal[template_String] := Module[{}, M2Tdocument = M2TeXTemplates[template];];
 
 
 
 
+(********* Document handle *********)
+(*** Document item ***)
+M2TDocument[] := Module[
+	{tempEnvironment, data},
+	
+	(* Get an environment, add data and turn it to an document *)
+	tempEnvironment = M2TeXEnvironment["document"];
+	data = tempEnvironment[[ 1 ]];
+	
+	(* Add the preamble and document class *)
+	AppendTo[data, "DocumentClass" -> {}];
+	AppendTo[data, "Preamble" -> {}];
+	
+	(* Return document item *)
+	M2TDocument[data]
+];
+
+(*** ToString function ***)
+M2TeXToString[M2TDocument[data_]] := Module[
+	{string},
+	
+	string = M2TeXToString[data["DocumentClass"]];
+	string = string <> "\n";
+	string = string <> "\n";
+	Do[
+		string = string <> M2TeXToString[par];
+		string = string <> "\n";
+	,{par, data["Preamble"]}];
+	string = string <> "\n";
+	string = string <> M2TeXToString[ M2TEnvironment[data] ];
+	string
+];
 
 
 
 
+(********* Document templates *********)
+(*** Article template ***)
+M2TeXTemplates["article"] := Module[
+	{ document = M2TDocument[] },
+	
+	document[[ 1, Key["DocumentClass"] ]] = M2TeXCommand["documentclass", "scrartcl"];
+	document[[ 1, Key["Preamble"] ]] = {
+		M2TeXPackage["fontenc", "T1"],
+		M2TeXPackage["inputenc", "utf8"],
+		M2TeXPackage["amsmath"]
+	};
+	
+	document
+];
+
+(*** Tikz template ***)
+M2TeXTemplates["tikz"] := Module[
+	{ document = M2TDocument[] },
+	
+	document[[ 1, Key["DocumentClass"] ]] = M2TeXCommand["documentclass", "standalone", "class=scrartcl"];
+	document[[ 1, Key["Preamble"] ]] = {
+		M2TeXPackage["fontenc", "T1"],
+		M2TeXPackage["inputenc", "utf8"],
+		M2TeXPackage["amsmath"],
+		M2TeXPackage["tikz"],
+		M2TeXPackage["pgfplots"],
+		M2TeXCommand["pgfplotsset", "compat=newest,tick label style={font=\\footnotesize}"]
+	};
+	
+	document
+];
 
 
 
 
+(********* Tikz tools *********)
+(*** General tikz command ***)
+M2TeXTikZCommand[name_] := M2TeXTikZCommand[name, "", None]
+M2TeXTikZCommand[name_, text_] := M2TeXTikZCommand[name, text, None]
+M2TeXTikZCommand[name_, Null, optionList_] := M2TeXTikZCommand[name, "", optionList]
+M2TeXTikZCommand[name_, text_, optionList_] := Module[{tempData},
+	
+	tempData = M2TeXCommand[name, "ParameterOptional" -> optionList, "EndCharacter" -> ";"][[1]];
+	AppendTo[tempData, "Text" -> text];
+	
+	M2TTikZCommand[tempData]
+];
+M2TeXToString[M2TTikZCommand[data_]] := Module[{string, dataTemp},
+	
+	(*Get string from command, without the end character *)
+	dataTemp = data;
+	dataTemp["EndCharacter"] = "";
+	string = M2TeXToString[M2TCommand[dataTemp]];
+	If [ data["Text"] != "",
+		string = string <> " ";
+		string = string <> data["Text"];
+	];
+	string = string <> data["EndCharacter"];
+	
+	(* return string *)
+	string
+];
+
+(*** Axis for pgf plot ***)
+M2TeXTikZAxis[list_] := M2TeXEnvironment["axis", "ParameterList" -> {M2TeXOptionOptional[list]}]
+
+(*** Plot datapoints ***)
+Options[M2TeXTikZPlot] = {
+	"AddPlot" -> False
+};
+M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
+	
+	(* Get a command*)
+	tempData = If[
+		OptionValue["AddPlot"],
+		M2TeXTikZCommand["addplot+", , par],
+		M2TeXTikZCommand["addplot", , par]
+	][[1]];
+	
+	(* Add table data *)
+	(* TODO: add check to table dimmensions here *)
+	AppendTo[tempData, "Table" -> table];
+	
+	(* return plot command *)
+	M2TTikZPlot[tempData]
+];
+M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp},
+	
+	(* Get the coordinates *)
+	string = "coordinates{%\n";
+	Do[
+		(* Check if both values are nummeric, otherwise skip the row *)
+		If[ MemberQ[NumericQ /@ coord, False],
+			(* coord is not numeric *)
+			Print["Non numeric value!"],
+			string = string <> "(" <> ToString@CForm[coord[[1]] ] <> ", " <> ToString@CForm[coord[[2]] ] <> ")%\n";
+		];
+	,{coord, data["Table"]}];
+	string = string <> "}";
+	
+	(* Add the command to string *)
+	dataTemp = data;
+	AppendTo[dataTemp, "Text" -> string];
+	M2TeXToString[M2TTikZCommand[dataTemp]]
+];
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-(********* Packages dictionary *********)
-ClearAll[f];
-SetAttributes[f,HoldFirst];
-f[x_]:= x = x + 5;
-
-a = 5;
-f[a];
-a
-
-(* 10 *)
-
-f[a];
-a
-
-(* 15 *)
 
 
 
