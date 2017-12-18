@@ -18,6 +18,16 @@ M2TeXGeneratePdf::usage="TODO";
 M2TeXSetPlot::usage="TODO";
 
 
+
+
+
+M2TeXOption::usage="TODO";
+M2TeXOptionOptional::usage="TODO";
+M2TeXOptionList::usage="TODO";
+
+M2TeXCommand::usage="TODO";
+
+
 (*Private Functions*)
 Begin["`Private`"];
 
@@ -38,7 +48,7 @@ fileQ[file_] := FileType[file] === File
 
 
 
-
+(*
 
 
 
@@ -146,7 +156,7 @@ M2TexAddPreamble[item_] := Module[
 
 (** M2TeXToString for general data types **)
 M2TeXToString[item_] := ToString[item];
-M2TeXToString[item_M2TeXNone] := "";
+M2TeXToString[None] := "";
 
 
 
@@ -190,7 +200,8 @@ M2TeXToString[item_M2TeXOption] := Module[
 	string
 ];
 
-(* Set optional parameters *)
+(* Overload constructor *)
+M2TeXSetOptional[options_M2TeXNone] := M2TeXNone[];
 M2TeXSetOptionalOption[options_] := M2TeXSetOption[options, "OpenCloseCharacter" -> {"[","]"}];
 
 
@@ -480,6 +491,130 @@ M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 ];
 
 
+*)
+
+
+
+(********* ToString functions *********)
+(*** Default ***)
+M2TeXToString[item_] := ToString[item];
+M2TeXToString[None] := "";
+
+(*** For options ***)
+M2TeXToStringOptions[item_] := M2TeXToString[item];
+M2TeXToStringOptions[item_List] := Module[
+	{string = ""},
+	
+	(* Loop over items *)
+	Do[
+		string = string <> M2TeXToStringOptions[ item[[i]] ] <> If[i == Length[item], "", ", "];
+	,{i, Length[item]}];
+	
+	(* Return string *)
+	string
+];
+
+
+
+
+(********* General options item *********)
+(*** Definition of item ***)
+Options[M2TeXOption] = {
+	"OpenCloseCharacter" -> {"{", "}"}
+};
+M2TeXOption[options_, OptionsPattern[]] := M2TOption[<|
+	"Options" -> options,
+	"OpenCloseCharacter" -> OptionValue["OpenCloseCharacter"]
+	|>
+];
+
+(*** ToString function ***)
+M2TeXToString[item_M2TOption] := Module[{data},
+	data = item[[1]];
+	(* return string *)
+	data[["OpenCloseCharacter",1]] <> M2TeXToStringOptions[data[["Options"]]] <> data[["OpenCloseCharacter",2]]
+];
+
+(*** Overload constructor ***)
+M2TeXOption[None, OptionsPattern[]] := None;
+M2TeXOptionOptional[options_] := M2TeXOption[options, "OpenCloseCharacter" -> { "[", "]" }];
+
+
+
+
+(********* General options list item *********)
+(*** Definition of item ***)
+M2TeXOptionList[list_] := M2TOptionList[list];
+M2TeXOptionList[None] := None;
+
+(*** Overload the ToString function ***)
+M2TeXToString[item_M2TOptionList] := Module[
+	{string = ""},
+	
+	(* option list *)
+	Do[
+		string = string <> M2TeXToString[par];
+	,{par, item[[1]]}];
+	
+	(* Return string of item *)
+	string
+];
+
+
+
+
+(********* General command item *********)
+(*** Definition of item ***)
+Options[M2TeXCommand] = {
+	"Parameter" -> None,
+	"ParameterOptional" -> None,
+	"ParameterList" -> None,
+	"StartCharacter" -> "\\",
+	"EndCharacter" -> "",
+	"Header" -> None
+};
+M2TeXCommand[name_, OptionsPattern[]] := (
+	M2TexAddPreamble[OptionValue["Header"]];
+	M2TCommand[<|
+		"Name" -> name,
+		"Parameter" -> M2TeXOption[OptionValue["Parameter"]],
+		"ParameterOptional" -> M2TeXOptionOptional[OptionValue["ParameterOptional"]],
+		"ParameterList" -> M2TeXOptionList[OptionValue["ParameterList"]],
+		"StartCharacter" -> OptionValue["StartCharacter"],
+		"EndCharacter" -> OptionValue["EndCharacter"]
+	|>]
+)
+
+(*** ToString function ***)
+M2TeXToString[item_M2TCommand] := Module[{data, string},
+	data = item[[1]];
+	
+	(* Command itself *)
+	string = data["StartCharacter"] <> data["Name"];
+	
+	(* Add the options, if a parameter list exits, this one will be added *)
+	If[ !( data["ParameterList"] === None ),
+		(* Parameter list *)
+		string = string <> M2TeXToString[ data["ParameterList"] ];
+		,
+		(* Parameters *)
+		string = string <> M2TeXToString[ data["ParameterOptional"] ];
+		string = string <> M2TeXToString[ data["Parameter"] ];
+	];
+	
+	(* return string *)
+	string <> data[ "EndCharacter" ]
+];
+
+(*** Overload constructor ***)
+M2TeXCommand[name_, parameter_, parameterOptional_:None] := Module[{},
+	M2TeXCommand[
+		name,
+		"Parameter" -> parameter,
+		"ParameterOptional" -> parameterOptional
+	]
+];
+M2TeXCommand[name_, Null, parameterOptional_] := M2TeXCommand[name, None, parameterOptional];
 
 
 
@@ -489,6 +624,79 @@ M2TeXGeneratePdf[name_,OptionsPattern[]] := Module[
 
 
 
+
+
+M2TeXSetPackage[packageName_, options_:M2TeXNone[]] := M2TeXSetCommand["usepackage", "Parameter" -> packageName, "OptionalParameter" -> options];
+
+
+(* M2TeXToString function for commands *)
+M2TeXToString[item_M2TeXCommand] := Module[
+	{string},
+	
+	(* get the string for the command *)
+	string = item[[4]] <> item[[1]];
+	
+	(* get the options *)
+	If[ item[[6]] === False ,
+		string = string <> M2TeXToString[item[[3]]];
+		string = string <> M2TeXToString[item[[2]]];
+		,
+		(* option list *)
+		string = string <> M2TeXToString[item[[6]]];
+	];
+	string = string <> item[[5]];
+	
+	(* Return string of item *)
+	string
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(********* Packages dictionary *********)
+ClearAll[f];
+SetAttributes[f,HoldFirst];
+f[x_]:= x = x + 5;
+
+a = 5;
+f[a];
+a
+
+(* 10 *)
+
+f[a];
+a
+
+(* 15 *)
 
 
 
