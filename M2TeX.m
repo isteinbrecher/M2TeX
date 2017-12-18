@@ -26,6 +26,8 @@ M2TeXOptionOptional::usage="TODO";
 M2TeXOptionList::usage="TODO";
 
 M2TeXCommand::usage="TODO";
+M2TeXPackage::usage="TODO";
+M2TeXEnvironment::usage="TODO";
 
 
 (*Private Functions*)
@@ -616,39 +618,64 @@ M2TeXCommand[name_, parameter_, parameterOptional_:None] := Module[{},
 ];
 M2TeXCommand[name_, Null, parameterOptional_] := M2TeXCommand[name, None, parameterOptional];
 
+(*** For packages in the header ***)
+M2TeXPackage[packageName_, options_:None] := M2TeXCommand["usepackage", packageName, options];
 
 
 
 
+(********* General environment item *********)
+(*** Definition of item ***)
+Options[M2TeXEnvironment] = {
+	"ParameterList" -> None,
+	"Header" -> None
+};
+M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
+	M2TexAddPreamble[OptionValue["Header"]];
+	M2TEnvironment[<|
+		"Name" -> name,
+		"StartCommand" -> M2TeXCommand["begin", name],
+		"EndCommand" -> M2TeXCommand["end", name],
+		"OptionList" -> M2TeXOptionList[OptionValue["ParameterList"]],
+		"Content" -> {}
+	|>]		
+]
 
-
-
-
-
-
-M2TeXSetPackage[packageName_, options_:M2TeXNone[]] := M2TeXSetCommand["usepackage", "Parameter" -> packageName, "OptionalParameter" -> options];
-
-
-(* M2TeXToString function for commands *)
-M2TeXToString[item_M2TeXCommand] := Module[
-	{string},
+(*** ToString function ***)
+M2TeXToString[item_M2TEnvironment] := Module[
+	{string, data},
+	data = item[[1]];
 	
-	(* get the string for the command *)
-	string = item[[4]] <> item[[1]];
+	(* start the environment *)
+	string = M2TeXToString[data["StartCommand"]];
 	
-	(* get the options *)
-	If[ item[[6]] === False ,
-		string = string <> M2TeXToString[item[[3]]];
-		string = string <> M2TeXToString[item[[2]]];
-		,
-		(* option list *)
-		string = string <> M2TeXToString[item[[6]]];
-	];
-	string = string <> item[[5]];
+	(* add the parameters *)
+	string = string <> M2TeXToString[data["OptionList"]];
 	
+	(* write new line *)
+	string = string <> "\n";
+	
+	(* Write the contents *)
+	Do[
+		string = string <> M2TeXToString[content];
+		string = string <> "\n";
+	,{ content, data["Content"] }];
+	
+	(* end the environment*)
+	string = string <> M2TeXToString[data["EndCommand"]];
+
 	(* Return string of item *)
 	string
 ];
+
+(*** Overload constructors ***)
+M2TeXEnvironment[name_, optionList_] := M2TeXEnvironment[name, "ParameterList" -> optionList]
+
+
+
+
+
+
 
 
 
