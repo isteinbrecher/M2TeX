@@ -29,6 +29,8 @@ M2TeXCommand::usage="TODO";
 M2TeXPackage::usage="TODO";
 M2TeXEnvironment::usage="TODO";
 
+M2TeXAddToEnvironment::usage="TODO";
+M2TeXCloseActiveEnvironment::usage="TODO";
 
 (*Private Functions*)
 Begin["`Private`"];
@@ -637,7 +639,8 @@ M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 		"StartCommand" -> M2TeXCommand["begin", name],
 		"EndCommand" -> M2TeXCommand["end", name],
 		"OptionList" -> M2TeXOptionList[OptionValue["ParameterList"]],
-		"Content" -> {}
+		"Content" -> {},
+		"ActiveContent" -> Sequence[1, Key["Content"]]
 	|>]		
 ]
 
@@ -674,8 +677,45 @@ M2TeXEnvironment[name_, optionList_] := M2TeXEnvironment[name, "ParameterList" -
 
 
 
+(********* Handle environment tree *********)
+(*** Add to environment ***)
+ClearAll[M2TeXAddToEnvironment];
+SetAttributes[M2TeXAddToEnvironment, HoldFirst];
+M2TeXAddToEnvironment[parent_, content_] := Module[
+	{seq},
+	
+	(* get sequence to active content *)
+	seq = parent[[ 1, Key["ActiveContent"] ]];
+	
+	(* Append to data *)
+	AppendTo[parent[[ seq ]], content ];
+	
+	(* Add to active content if content was environment *)
+	If[ MatchQ[content, _M2TEnvironment],
+		seq = Sequence[seq, Length[parent[[ seq ]] ], 1, Key["Content"] ];
+		parent[[1, Key["ActiveContent"] ]] = seq;
+	];
+];
 
-
+(*** Close active environment ***)
+ClearAll[M2TeXCloseActiveEnvironment];
+SetAttributes[M2TeXCloseActiveEnvironment, HoldFirst];
+M2TeXCloseActiveEnvironment[parent_] := Module[
+	{seq, seqList},
+	
+	(* get sequence to active content *)
+	seq = parent[[ 1, Key["ActiveContent"] ]];
+	seqList = List[seq];
+	
+	(* Check if the sequence is long enough *)
+	If[ Floor[Length[seqList] / 3] == 0,
+		(* Can not close if there is only 1 environment active *)
+		Print["Error, depth not long enough!"];,
+		(* Remove the last 3 indices of sequence *)
+		seqList = Delete[seqList, {{-1}, {-2}, {-3}}];
+		parent[[ 1, Key["ActiveContent"] ]] = seqList /. List -> Sequence;
+	];
+];
 
 
 
