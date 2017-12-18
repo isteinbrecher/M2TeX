@@ -25,6 +25,7 @@ M2TeXTikZCommand::usage="TODO";
 M2TeXTikZAxis::usage="TODO";
 M2TeXTikZPlot::usage="TODO";
 
+M2TeXGeneratePDF::usage="TODO";
 
 
 (*Private Functions*)
@@ -785,8 +786,8 @@ M2TeXTemplates["article"] := Module[
 	document
 ];
 
-(*** Tikz template ***)
-M2TeXTemplates["tikz"] := Module[
+(*** standalone template ***)
+M2TeXTemplates["standalone"] := Module[
 	{ document = M2TDocument[] },
 	
 	document[[ 1, Key["DocumentClass"] ]] = M2TeXCommand["documentclass", "standalone", "class=scrartcl"];
@@ -879,11 +880,92 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp},
 
 
 
+(********* Compile the document *********)
+
+
+(** Create the pdf file **)
+Options[M2TeXGeneratePDF] = {
+	"SaveTeX" -> True,
+	"OutputPDF" -> False
+};
+M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
+	{
+		nameTemp,
+		texFileTemp,
+		pdfFileTemp,
+		texFile,
+		pdfFile,
+		out,
+		outImage
+	},
+	
+	(* The files will be compiled in the temp directory *)
+	nameTemp = "M2TeX_" <> ToString[ $KernelID ];
+	texFileTemp = FileNameJoin[{ $TemporaryDirectory, nameTemp <> ".tex" }];
+	pdfFileTemp = FileNameJoin[{ $TemporaryDirectory, nameTemp <> ".pdf" }]; 
+	texFile = FileNameJoin[{ Directory[], name <> ".tex" }];
+	pdfFile = FileNameJoin[{ Directory[], name <> ".pdf" }];
+	
+	(* Save the string to *.tex file *)
+	Export[ texFileTemp, M2TeXToString[environment], "Text" ];
+	
+	(* Execute the LaTeX command*)
+	out = RunProcess[{"pdflatex", "-halt-on-error", "--interaction=nonstopmode", texFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+	
+	(* Check if there were tex errors *)
+	If[ texErrorQ[out["StandardOutput"]],
+		Print["LaTeX Error!"];
+		Abort[];
+	];
+	
+	(* Move the files *)
+	SaveOverwrite[pdfFileTemp, pdfFile];
+	If[ OptionValue["SaveTeX"],
+		SaveOverwrite[texFileTemp, texFile];
+	];
+	
+	(* Get the results *)
+	If[ OptionValue["OutputPDF"],
+		(* Load the pdf file *)
+		outImage = Import[pdfFileTemp];
+		,
+
+		(* Delete all image files in temp directory *)
+		DeleteFile[FileNames[nameTemp <> "_*.png", $TemporaryDirectory]];
+
+		(* Convert the pdf into png files *)
+		gs = "C:\\Program Files\\gs\\gs9.20\\bin\\gswin64c.exe";
+		RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+		
+		(* Import png images *)
+		outImage = Import /@ FileNames[ nameTemp <> "_*.png", $TemporaryDirectory];
+	];
+	
+	(* Return the results *)
+	{
+		outImage,
+		out
+	}
+];
 
 
 
 
+(********* Utility functions *********)
+SaveOverwrite[source_, destination_] := Module[{},
+	If[ FileExistsQ[destination],
+		DeleteFile[destination];
+	];
+	CopyFile[source, destination];
+];
 
+
+
+(********* Functions from MaTeX *********)
+(* This function is used to try to detect errors based on the log file.
+   It is necessary because on Windows RunProcess doesn't capture the correct exit code. *)
+texErrorQ[log_String] := Count[StringSplit[StringDelete[log, "\r"], "\n"], line_ /; StringMatchQ[line, errorLinePattern]] > 0
+errorLinePattern = ("! "~~___) | ("!"~~___~~"error"~~___) | (___~~"Fatal error occurred"~~___);
 
 
 
