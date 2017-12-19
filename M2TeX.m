@@ -17,6 +17,7 @@ M2TeXAddToEnvironment::usage="TODO";
 M2TeXCloseActiveEnvironment::usage="TODO";
 M2TeXCloseAll::usage="TODO";
 
+M2TeXGetGlobal::usage="TODO";
 M2TeXSetGlobal::usage="TODO";
 M2TeXToStringGlobal::usage="TODO";
 
@@ -119,7 +120,7 @@ Options[M2TeXCommand] = {
 	"ParameterList" -> None,
 	"StartCharacter" -> "\\",
 	"EndCharacter" -> "",
-	"Header" -> None
+	"Header" -> {}
 };
 M2TeXCommand[name_, OptionsPattern[]] := (
 	M2TexAddPreamble[OptionValue["Header"]];
@@ -129,7 +130,8 @@ M2TeXCommand[name_, OptionsPattern[]] := (
 		"ParameterOptional" -> M2TeXOptionOptional[OptionValue["ParameterOptional"]],
 		"ParameterList" -> M2TeXOptionList[OptionValue["ParameterList"]],
 		"StartCharacter" -> OptionValue["StartCharacter"],
-		"EndCharacter" -> OptionValue["EndCharacter"]
+		"EndCharacter" -> OptionValue["EndCharacter"],
+		"Header" -> OptionValue["Header"]
 	|>]
 )
 
@@ -175,7 +177,7 @@ Options[M2TeXEnvironment] = {
 	"ParameterList" -> None,
 	"StartCommand" -> None,
 	"EndCommand" -> None,
-	"Header" -> None
+	"Header" -> {}
 };
 M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 	M2TexAddPreamble[OptionValue["Header"]];
@@ -193,7 +195,8 @@ M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 		],
 		"OptionList" -> M2TeXOptionList[OptionValue["ParameterList"]],
 		"Content" -> {},
-		"ActiveContent" -> Sequence[1, Key["Content"]]
+		"ActiveContent" -> Sequence[1, Key["Content"]],
+		"Header" -> OptionValue["Header"]
 	|>]
 ]
 
@@ -283,8 +286,42 @@ M2TeXCloseActiveEnvironment[] := M2TeXCloseActiveEnvironment[M2Tdocument];
 
 (********* Global document items *********)
 M2TeXToStringGlobal[] := M2TeXToString[M2Tdocument];
+M2TeXGetGlobal[] := M2Tdocument;
 M2TeXSetGlobal[item_] := Module[{}, M2Tdocument = item;];
 M2TeXSetGlobal[template_String] := Module[{}, M2Tdocument = M2TeXTemplates[template];];
+
+
+
+
+(********* Header Handle *********)
+(*** Add header of item to list ***)
+ClearAll[M2TeXGetHeader];
+SetAttributes[M2TeXGetHeader, HoldFirst];
+
+M2TeXGetHeader[headerList_, _] := None;
+
+(*** Get header from environments ***)
+M2TeXGetHeader[headerList_, M2TEnvironment[data_]] := (
+	(* Add own header *)
+	M2TeXGetHeader[headerList, _[ data ] ];
+	
+	(* Add header of children *)
+	Do[
+		M2TeXGetHeader[headerList, item];
+	,{item, data["Content"]}];
+);
+
+(*** Header for general items ***)
+M2TeXGetHeader[headerList_, fun_[dic_Association]] := If[
+	(* Only do something if the dic has a header item *)
+	KeyExistsQ[dic, "Header"],
+	(* check if item exists already *)
+	Do[
+		If[! MemberQ[Hash /@ headerList, Hash@item],
+			AppendTo[headerList, item];
+		];
+	,{item, dic["Header"]}];
+];
 
 
 
@@ -299,8 +336,8 @@ M2TeXDocument[documentClass_, preamble_:{}] := Module[
 	data = tempEnvironment[[ 1 ]];
 	
 	(* Add the preamble and document class *)
+	data["Header"] = preamble;
 	AppendTo[data, "DocumentClass" -> documentClass];
-	AppendTo[data, "Preamble" -> preamble];
 	
 	(* Return document item *)
 	M2TDocument[data]
@@ -308,15 +345,20 @@ M2TeXDocument[documentClass_, preamble_:{}] := Module[
 
 (*** ToString function ***)
 M2TeXToString[M2TDocument[data_]] := Module[
-	{string},
+	{string, headerList={}},
 	
 	string = M2TeXToString[data["DocumentClass"]];
 	string = string <> "\n";
 	string = string <> "\n";
+	
+	(* get header List*)
+	M2TeXGetHeader[headerList, M2TEnvironment[data]];
+	
+	(* add the headers to the string *)
 	Do[
 		string = string <> M2TeXToString[par];
 		string = string <> "\n";
-	,{par, data["Preamble"]}];
+	,{par, headerList}];
 	string = string <> "\n";
 	string = string <> M2TeXToString[ M2TEnvironment[data] ];
 	string
@@ -364,10 +406,10 @@ M2TeXTemplates["standalone"] := Module[
 (*** General tikz command ***)
 M2TeXTikZCommand[name_] := M2TeXTikZCommand[name, "", None]
 M2TeXTikZCommand[name_, text_] := M2TeXTikZCommand[name, text, None]
-M2TeXTikZCommand[name_, Null, optionList_] := M2TeXTikZCommand[name, "", optionList]
-M2TeXTikZCommand[name_, text_, optionList_] := Module[{tempData},
+M2TeXTikZCommand[name_, Null, optionList_, options___] := M2TeXTikZCommand[name, "", optionList, options]
+M2TeXTikZCommand[name_, text_, optionList_, options___] := Module[{tempData},
 	
-	tempData = M2TeXCommand[name, "ParameterOptional" -> optionList, "EndCharacter" -> ";"][[1]];
+	tempData = M2TeXCommand[name, "ParameterOptional" -> optionList, "EndCharacter" -> ";", options][[1]];
 	AppendTo[tempData, "Text" -> text];
 	
 	M2TTikZCommand[tempData]
@@ -397,16 +439,16 @@ M2TeXTikZAxis[list_] := M2TeXEnvironment["axis", "ParameterList" -> {M2TeXOption
 
 (*** Plot datapoints ***)
 Options[M2TeXTikZPlot] = {
-	"AddPlot" -> False
+	"AddPlot" -> False,
+	"Header" -> {}
 };
 M2TeXTikZPlot[table_, options___Rule] := M2TeXTikZPlot[table, None, options]
 M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
-	
 	(* Get a command*)
 	tempData = If[
 		OptionValue["AddPlot"],
-		M2TeXTikZCommand["addplot+", Null, par],
-		M2TeXTikZCommand["addplot", Null, par]
+		M2TeXTikZCommand["addplot+", Null, par, "Header" -> OptionValue["Header"] ],
+		M2TeXTikZCommand["addplot", Null, par, "Header" -> OptionValue["Header"]]
 	][[1]];
 	
 	(* Add table data *)
