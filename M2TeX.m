@@ -5,6 +5,8 @@ BeginPackage["M2TeX`"];
 
 M2TeXToString::usage="TODO";
 
+M2TeXList::usage="TODO";
+
 M2TeXOption::usage="TODO";
 M2TeXOptionOptional::usage="TODO";
 M2TeXOptionList::usage="TODO";
@@ -53,19 +55,21 @@ M2TeXToString[None] := "";
 
 
 
-(********* General options item *********)
+(********* General list item *********)
 (*** Definition of item ***)
-Options[M2TeXOption] = {
-	"OpenCloseCharacter" -> {"{", "}"}
+Options[M2TeXList] = {
+	"OpenCloseCharacter" -> {"{", "}"},
+	"Seperator" -> ", "
 };
-M2TeXOption[options_, OptionsPattern[]] := M2TOption[<|
-	"Options" -> options,
-	"OpenCloseCharacter" -> OptionValue["OpenCloseCharacter"]
+M2TeXList[data_, OptionsPattern[]] := M2TList[<|
+	"Data" -> data,
+	"OpenCloseCharacter" -> OptionValue["OpenCloseCharacter"],
+	"Seperator" -> OptionValue["Seperator"]
 	|>
 ];
 
 (*** ToString function ***)
-M2TeXToString[M2TOption[data_]] := Module[
+M2TeXToString[M2TList[data_]] := Module[
 	{
 		string = "",
 		list
@@ -74,9 +78,9 @@ M2TeXToString[M2TOption[data_]] := Module[
 	string = data[["OpenCloseCharacter",1]];
 	
 	(* add contents *)
-	list = Flatten[ {data[["Options"]]} ];
+	list = Flatten[ {data[["Data"]]} ];
 	Do[
-		string = string <> M2TeXToString[ list[[i]] ] <> If[i == Length[list], "", ", "];
+		string = string <> M2TeXToString[ list[[i]] ] <> If[i == Length[list], "", data["Seperator"]];
 	,{i, Length[list]}];
 	
 	string = string <> data[["OpenCloseCharacter",2]];
@@ -84,9 +88,16 @@ M2TeXToString[M2TOption[data_]] := Module[
 	string
 ];
 
-(*** Overload constructor ***)
-M2TeXOption[None, OptionsPattern[]] := None;
-M2TeXOptionOptional[options_] := M2TeXOption[options, "OpenCloseCharacter" -> { "[", "]" }];
+(*** overloads ***)
+M2TeXList[None, OptionsPattern[]] := None;
+
+
+
+
+(********* General options item *********)
+(*** Definition of item ***)
+M2TeXOption[options_] := M2TeXList[options, "OpenCloseCharacter" -> { "{", "}" }, "Seperator" -> ", "];
+M2TeXOptionOptional[options_] := M2TeXList[options, "OpenCloseCharacter" -> { "[", "]" }, "Seperator" -> ", "];
 
 
 
