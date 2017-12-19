@@ -78,7 +78,7 @@ M2TeXToString[M2TList[data_]] := Module[
 	string = data[["OpenCloseCharacter",1]];
 	
 	(* add contents *)
-	list = Flatten[ {data[["Data"]]} ];
+	list = data[["Data"]];
 	Do[
 		string = string <> M2TeXToString[ list[[i]] ] <> If[i == Length[list], "", data["Seperator"]];
 	,{i, Length[list]}];
@@ -90,35 +90,23 @@ M2TeXToString[M2TList[data_]] := Module[
 
 (*** overloads ***)
 M2TeXList[None, OptionsPattern[]] := None;
+M2TeXList[{None}, OptionsPattern[]] := None;
 
 
 
 
 (********* General options item *********)
 (*** Definition of item ***)
-M2TeXOption[options_] := M2TeXList[options, "OpenCloseCharacter" -> { "{", "}" }, "Seperator" -> ", "];
-M2TeXOptionOptional[options_] := M2TeXList[options, "OpenCloseCharacter" -> { "[", "]" }, "Seperator" -> ", "];
+M2TeXOption[options_] := M2TeXList[Flatten[{options}], "OpenCloseCharacter" -> { "{", "}" }, "Seperator" -> ", "];
+M2TeXOptionOptional[options_] := M2TeXList[Flatten[{options}], "OpenCloseCharacter" -> { "[", "]" }, "Seperator" -> ", "];
 
 
 
 
 (********* General options list item *********)
 (*** Definition of item ***)
-M2TeXOptionList[list_] := M2TOptionList[list];
+M2TeXOptionList[list_] := M2TeXList[list, "Seperator" -> "", "OpenCloseCharacter" -> {"", ""}];
 M2TeXOptionList[None] := None;
-
-(*** Overload the ToString function ***)
-M2TeXToString[M2TOptionList[data_]] := Module[
-	{string = ""},
-	
-	(* option list *)
-	Do[
-		string = string <> M2TeXToString[par];
-	,{par, data}];
-	
-	(* Return string of item *)
-	string
-];
 
 
 
@@ -221,14 +209,17 @@ M2TeXToString[M2TEnvironment[data_]] := Module[
 	(* add the parameters *)
 	string = string <> M2TeXToString[data["OptionList"]];
 	
-	(* write new line *)
 	string = string <> "\n";
 	
 	(* Write the contents *)
-	Do[
-		string = string <> M2TeXToString[content];
+	string = string <> M2TeXToString[
+		M2TeXList[data["Content"], "Seperator" -> "\n", "OpenCloseCharacter" -> {"", ""}]
+	];
+	
+	(* if there were items, add new line *)
+	If[ Length@data["Content"] != 0,
 		string = string <> "\n";
-	,{ content, data["Content"] }];
+	];
 	
 	(* end the environment*)
 	string = string <> M2TeXToString[data["EndCommand"]];
@@ -286,7 +277,7 @@ M2TeXCloseActiveEnvironment[parent_] := Module[
 (*** Close all child environments ***)
 ClearAll[M2TeXCloseAll];
 SetAttributes[M2TeXCloseAll, HoldFirst];
-M2TeXCloseAll[parent_] := parent[[1, Key["ActiveContent"] ]] = Sequence[1, Key["Content"]];
+M2TeXCloseAll[parent_] := Module[{}, parent[[1, Key["ActiveContent"] ]] = Sequence[1, Key["Content"]]; ];
 
 (*** Overloads for document ***)
 M2TeXAddToEnvironment[content_] := M2TeXAddToEnvironment[M2Tdocument, content]; 
@@ -331,7 +322,7 @@ M2TeXGetHeader[headerList_, fun_[dic_Association]] := If[
 		If[! MemberQ[Hash /@ headerList, Hash@item],
 			AppendTo[headerList, item];
 		];
-	,{item, dic["Header"]}];
+	,{item, Flatten[{dic["Header"]}]  }];
 ];
 
 
@@ -366,10 +357,11 @@ M2TeXToString[M2TDocument[data_]] := Module[
 	M2TeXGetHeader[headerList, M2TEnvironment[data]];
 	
 	(* add the headers to the string *)
-	Do[
-		string = string <> M2TeXToString[par];
-		string = string <> "\n";
-	,{par, headerList}];
+	string = string <> M2TeXToString[
+		M2TeXList[headerList, "Seperator" -> "\n", "OpenCloseCharacter" -> {"", ""}]
+	];
+	
+	string = string <> "\n";
 	string = string <> "\n";
 	string = string <> M2TeXToString[ M2TEnvironment[data] ];
 	string
