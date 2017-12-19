@@ -15,10 +15,12 @@ M2TeXEnvironment::usage="TODO";
 
 M2TeXAddToEnvironment::usage="TODO";
 M2TeXCloseActiveEnvironment::usage="TODO";
+M2TeXCloseAll::usage="TODO";
 
 M2TeXSetGlobal::usage="TODO";
 M2TeXToStringGlobal::usage="TODO";
 
+M2TeXDocument::usage="TODO";
 M2TeXTemplates::usage="TODO";
 
 M2TeXTikZ::usage="TODO";
@@ -267,6 +269,11 @@ M2TeXCloseActiveEnvironment[parent_] := Module[
 	];
 ];
 
+(*** Close all child environments ***)
+ClearAll[M2TeXCloseAll];
+SetAttributes[M2TeXCloseAll, HoldFirst];
+M2TeXCloseAll[parent_] := parent[[1, Key["ActiveContent"] ]] = Sequence[1, Key["Content"]];
+
 (*** Overloads for document ***)
 M2TeXAddToEnvironment[content_] := M2TeXAddToEnvironment[M2Tdocument, content]; 
 M2TeXCloseActiveEnvironment[] := M2TeXCloseActiveEnvironment[M2Tdocument];
@@ -284,7 +291,7 @@ M2TeXSetGlobal[template_String] := Module[{}, M2Tdocument = M2TeXTemplates[templ
 
 (********* Document handle *********)
 (*** Document item ***)
-M2TDocument[] := Module[
+M2TeXDocument[documentClass_, preamble_:{}] := Module[
 	{tempEnvironment, data},
 	
 	(* Get an environment, add data and turn it to an document *)
@@ -292,8 +299,8 @@ M2TDocument[] := Module[
 	data = tempEnvironment[[ 1 ]];
 	
 	(* Add the preamble and document class *)
-	AppendTo[data, "DocumentClass" -> {}];
-	AppendTo[data, "Preamble" -> {}];
+	AppendTo[data, "DocumentClass" -> documentClass];
+	AppendTo[data, "Preamble" -> preamble];
 	
 	(* Return document item *)
 	M2TDocument[data]
@@ -321,24 +328,24 @@ M2TeXToString[M2TDocument[data_]] := Module[
 (********* Document templates *********)
 (*** Article template ***)
 M2TeXTemplates["article"] := Module[
-	{ document = M2TDocument[] },
+	{ documentClass, preamble },
 	
-	document[[ 1, Key["DocumentClass"] ]] = M2TeXCommand["documentclass", "scrartcl"];
-	document[[ 1, Key["Preamble"] ]] = {
+	documentClass = M2TeXCommand["documentclass", "scrartcl"];
+	preamble = {
 		M2TeXPackage["fontenc", "T1"],
 		M2TeXPackage["inputenc", "utf8"],
 		M2TeXPackage["amsmath"]
 	};
 	
-	document
+	M2TeXDocument[documentClass, preamble]
 ];
 
 (*** standalone template ***)
 M2TeXTemplates["standalone"] := Module[
-	{ document = M2TDocument[] },
+	{ documentClass, preamble },
 	
-	document[[ 1, Key["DocumentClass"] ]] = M2TeXCommand["documentclass", "standalone", "class=scrartcl"];
-	document[[ 1, Key["Preamble"] ]] = {
+	documentClass = M2TeXCommand["documentclass", "standalone", "class=scrartcl"];
+	preamble = {
 		M2TeXPackage["fontenc", "T1"],
 		M2TeXPackage["inputenc", "utf8"],
 		M2TeXPackage["amsmath"],
@@ -347,7 +354,7 @@ M2TeXTemplates["standalone"] := Module[
 		M2TeXCommand["pgfplotsset", "compat=newest,tick label style={font=\\footnotesize}"]
 	};
 	
-	document
+	M2TeXDocument[documentClass, preamble]
 ];
 
 
@@ -397,8 +404,8 @@ M2TeXTikZPlot[table_, par_:None, OptionsPattern[]] := Module[{tempData},
 	(* Get a command*)
 	tempData = If[
 		OptionValue["AddPlot"],
-		M2TeXTikZCommand["addplot+", , par],
-		M2TeXTikZCommand["addplot", , par]
+		M2TeXTikZCommand["addplot+", Null, par],
+		M2TeXTikZCommand["addplot", Null, par]
 	][[1]];
 	
 	(* Add table data *)
@@ -445,7 +452,7 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 		texFile,
 		pdfFile,
 		out,
-		outImage
+		outImage = {}
 	},
 	
 	(* The files will be compiled in the temp directory *)
@@ -464,38 +471,38 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	];
 	
 	(* Execute the LaTeX command*)
+	If[FileExistsQ[pdfFileTemp], DeleteFile[pdfFileTemp];];
 	out = RunProcess[{"pdflatex", "-halt-on-error", "--interaction=nonstopmode", texFileTemp}, ProcessDirectory -> $TemporaryDirectory];
 	
 	(* Check if there were tex errors *)
 	If[ texErrorQ[out["StandardOutput"]],
 		Print["LaTeX Error!"];
-		Abort[];
-	];
-	
-	(* Move the files *)
-	SaveOverwrite[pdfFileTemp, pdfFile];
-	
-	(* Get the results *)
-	If[ OptionValue["OutputPDF"],
-		(* Load the pdf file *)
-		outImage = Import[pdfFileTemp];
 		,
-
-		(* Delete all image files in temp directory *)
-		DeleteFile[FileNames[nameTemp <> "_*.png", $TemporaryDirectory]];
-
-		(* Convert the pdf into png files *)
-		gs = "C:\\Program Files\\gs\\gs9.20\\bin\\gswin64c.exe";
-		RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+		(* Move the files *)
+		SaveOverwrite[pdfFileTemp, pdfFile];
 		
-		(* Import png images *)
-		outImage = Import /@ FileNames[ nameTemp <> "_*.png", $TemporaryDirectory];
+		(* Get the results *)
+		If[ OptionValue["OutputPDF"],
+			(* Load the pdf file *)
+			outImage = Import[pdfFileTemp];
+			,
+	
+			(* Delete all image files in temp directory *)
+			DeleteFile[FileNames[nameTemp <> "_*.png", $TemporaryDirectory]];
+	
+			(* Convert the pdf into png files *)
+			gs = "C:\\Program Files\\gs\\gs9.20\\bin\\gswin64c.exe";
+			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+			
+			(* Import png images *)
+			outImage = Import /@ FileNames[ nameTemp <> "_*.png", $TemporaryDirectory];
+		];
 	];
 	
 	(* Return the results *)
 	{
 		outImage,
-		out
+		getErrorWarningOverfull[ out[["StandardOutput"]] ]
 	}
 ];
 
@@ -503,11 +510,63 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 
 
 (********* Utility functions *********)
+(*** Save file, and delete existing file bevore that ***)
 SaveOverwrite[source_, destination_] := Module[{},
 	If[ FileExistsQ[destination],
 		DeleteFile[destination];
 	];
 	CopyFile[source, destination];
+];
+
+
+
+
+(********* Get error code from latex output *********)
+(*** Functions catch errors/warnings/overfull ***)
+errorQ[text_String] := StringMatchQ[text, StartOfString ~~ "!" ~~ __]
+warningQ[text_String] := StringMatchQ[text, StartOfString ~~ "LaTeX Warning" ~~ __]
+overfullQ[text_String] := StringMatchQ[text, StartOfString ~~ "Overfull" ~~ __]
+
+(*** Get the notifications from string ***)
+getErrorWarningOverfull[string_String] := Module[
+	{
+		stringLines
+	},
+	
+	(* Split the string at the new line markers *)
+	stringLines = StringSplit[string, {"\r\n"}];
+	
+	(* return the messages *)
+	{
+		gerErrorString[stringLines, errorQ, 3],
+		gerErrorString[stringLines, warningQ, 1],
+		gerErrorString[stringLines, overfullQ, 1]
+	}
+];
+
+(*** Get a string from the error code ***)
+gerErrorString[lines_, checkQ_, maxLines_] := Module[
+	{
+		positions,
+		indicesList
+	},
+
+	(* Positions of error *)
+	positions = Position[checkQ /@ lines, True] // Flatten;
+	
+	(* Indices of list to join *)
+	indicesList = Table[
+		Table[
+			j
+		,{j,i,Min[{i+maxLines-1, Length[lines]}]}]
+	,{i, positions}];
+	
+	(* Join the error codes together *)
+	Table[
+		StringJoin[
+			Insert[lines[[indices]], "\n", Table[{i}, {i, 2, Length[lines[[indices]]]}]]
+		]
+	,{indices, indicesList}]
 ];
 
 
