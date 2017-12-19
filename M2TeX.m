@@ -399,7 +399,8 @@ M2TeXTikZAxis[list_] := M2TeXEnvironment["axis", "ParameterList" -> {M2TeXOption
 Options[M2TeXTikZPlot] = {
 	"AddPlot" -> False
 };
-M2TeXTikZPlot[table_, par_:None, OptionsPattern[]] := Module[{tempData},
+M2TeXTikZPlot[table_, options___Rule] := M2TeXTikZPlot[table, None, options]
+M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
 	
 	(* Get a command*)
 	tempData = If[
@@ -444,6 +445,7 @@ Options[M2TeXGeneratePDF] = {
 	"SaveTeX" -> False,
 	"OutputPDF" -> False
 };
+M2TeXGeneratePDF[name_, options___Rule] := M2TeXGeneratePDF[name, M2Tdocument, options];
 M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	{
 		nameTemp,
