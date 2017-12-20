@@ -5,6 +5,8 @@ BeginPackage["M2TeX`"];
 
 M2TeXToString::usage="TODO";
 
+M2TeXEmpty::usage="TODO";
+
 M2TeXList::usage="TODO";
 
 M2TeXOption::usage="TODO";
@@ -51,6 +53,14 @@ fileQ[file_] := FileType[file] === File
 (*** Default ***)
 M2TeXToString[item_] := ToString[item];
 M2TeXToString[None] := "";
+
+
+
+
+(********* Empty item, mainly for headers *********)
+(*** Default ***)
+M2TeXEmpty[header_] := M2TEmpty[<|"Header" -> header|>];
+M2TeXToString[M2TEmpty[temp_]] := "";
 
 
 
