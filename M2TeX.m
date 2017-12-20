@@ -5,6 +5,7 @@ BeginPackage["M2TeX`"];
 
 M2TeXToString::usage="TODO";
 
+M2TeXText::usage="TODO";
 M2TeXEmpty::usage="TODO";
 
 M2TeXList::usage="TODO";
@@ -57,10 +58,31 @@ M2TeXToString[None] := "";
 
 
 
+(********* Text item *********)
+(*** Default ***)
+Options[M2TeXText] = {
+	"Header" -> {},
+	"NewLineCharacter" -> "\n"
+};
+M2TeXText[text_, OptionsPattern[]] := M2TText[<|"Text" -> text, "Header" -> OptionValue["Header"], "NewLineCharacter" -> ""|>];
+M2TeXToString[M2TText[data_]] := data["Text"];
+
+
+
+
 (********* Empty item, mainly for headers *********)
 (*** Default ***)
-M2TeXEmpty[header_] := M2TEmpty[<|"Header" -> header|>];
-M2TeXToString[M2TEmpty[temp_]] := "";
+M2TeXEmpty[header_] := M2TeXText["", "Header" -> header, "NewLineCharacter" -> ""];
+
+
+
+
+(********* Get newline character if item has the option *********)
+M2TeXGetNewLine[___] := "\n";
+M2TeXGetNewLine[head_[dic_Association,optional___]] := If[KeyExistsQ[dic, "NewLineCharacter"],
+	dic["NewLineCharacter"],
+	M2TeXGetNewLine[]
+];
 
 
 
@@ -69,12 +91,14 @@ M2TeXToString[M2TEmpty[temp_]] := "";
 (*** Definition of item ***)
 Options[M2TeXList] = {
 	"OpenCloseCharacter" -> {"{", "}"},
-	"Seperator" -> ", "
+	"Seperator" -> ", ",
+	"NewLineCharacter" -> "\n"
 };
 M2TeXList[data_, OptionsPattern[]] := M2TList[<|
 	"Data" -> data,
 	"OpenCloseCharacter" -> OptionValue["OpenCloseCharacter"],
-	"Seperator" -> OptionValue["Seperator"]
+	"Seperator" -> OptionValue["Seperator"],
+	"NewLineCharacter" -> OptionValue["NewLineCharacter"]
 	|>
 ];
 
@@ -129,6 +153,7 @@ Options[M2TeXCommand] = {
 	"ParameterList" -> None,
 	"StartCharacter" -> "\\",
 	"EndCharacter" -> "",
+	"NewLineCharacter" -> "\n",
 	"Header" -> {}
 };
 M2TeXCommand[name_, OptionsPattern[]] := (
@@ -140,7 +165,8 @@ M2TeXCommand[name_, OptionsPattern[]] := (
 		"ParameterList" -> M2TeXOptionList[OptionValue["ParameterList"]],
 		"StartCharacter" -> OptionValue["StartCharacter"],
 		"EndCharacter" -> OptionValue["EndCharacter"],
-		"Header" -> OptionValue["Header"]
+		"Header" -> OptionValue["Header"],
+		"NewLineCharacter" -> OptionValue["NewLineCharacter"]
 	|>]
 )
 
@@ -186,7 +212,8 @@ Options[M2TeXEnvironment] = {
 	"ParameterList" -> None,
 	"StartCommand" -> None,
 	"EndCommand" -> None,
-	"Header" -> {}
+	"Header" -> {},
+	"NewLineCharacter" -> "\n"
 };
 M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 	M2TexAddPreamble[OptionValue["Header"]];
@@ -205,7 +232,8 @@ M2TeXEnvironment[name_, OptionsPattern[]] := Module[{},
 		"OptionList" -> M2TeXOptionList[OptionValue["ParameterList"]],
 		"Content" -> {},
 		"ActiveContent" -> Sequence[1, Key["Content"]],
-		"Header" -> OptionValue["Header"]
+		"Header" -> OptionValue["Header"],
+		"NewLineCharacter" -> OptionValue["NewLineCharacter"]
 	|>]
 ]
 
@@ -218,18 +246,13 @@ M2TeXToString[M2TEnvironment[data_]] := Module[
 	
 	(* add the parameters *)
 	string = string <> M2TeXToString[data["OptionList"]];
-	
-	string = string <> "\n";
+	string = string <> M2TeXGetNewLine[data["StartCommand"]];
 	
 	(* Write the contents *)
-	string = string <> M2TeXToString[
-		M2TeXList[data["Content"], "Seperator" -> "\n", "OpenCloseCharacter" -> {"", ""}]
-	];
-	
-	(* if there were items, add new line *)
-	If[ Length@data["Content"] != 0,
-		string = string <> "\n";
-	];
+	Do[
+		string = string <> M2TeXToString[cont];
+		string = string <> M2TeXGetNewLine[cont];
+	,{cont, data["Content"]}];
 	
 	(* end the environment*)
 	string = string <> M2TeXToString[data["EndCommand"]];
