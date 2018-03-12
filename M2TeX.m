@@ -611,7 +611,8 @@ SaveOverwrite[source_, destination_] := Module[{},
 	CopyFile[source, destination];
 ];
 
-
+(*** Get point data from plots ***)
+M2TeXPlotToPoints[plt_] := Cases[plt, Line[data_] :> data, Infinity];
 
 
 (********* Get error code from latex output *********)
