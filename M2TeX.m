@@ -36,6 +36,8 @@ M2TeXTikZPlot::usage="TODO";
 
 M2TeXGeneratePDF::usage="TODO";
 
+M2TeXPlotToPoints::usage="TODO";
+
 
 (*Private Functions*)
 Begin["`Private`"];
@@ -476,7 +478,8 @@ M2TeXTikZAxis[list_] := M2TeXEnvironment["axis", "ParameterList" -> {M2TeXOption
 (*** Plot datapoints ***)
 Options[M2TeXTikZPlot] = {
 	"AddPlot" -> False,
-	"Header" -> {}
+	"Header" -> {},
+	"PostText" -> ""
 };
 M2TeXTikZPlot[table_, options___Rule] := M2TeXTikZPlot[table, None, options]
 M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
@@ -491,10 +494,13 @@ M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
 	(* TODO: add check to table dimmensions here *)
 	AppendTo[tempData, "Table" -> table];
 	
+	(* Add PostText *)
+	AppendTo[tempData, "PostText" -> OptionValue["PostText"]];
+	
 	(* return plot command *)
 	M2TTikZPlot[tempData]
 ];
-M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp},
+M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
 	
 	(* Get the coordinates *)
 	string = "coordinates{%\n";
@@ -507,6 +513,13 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp},
 		];
 	,{coord, data["Table"]}];
 	string = string <> "}";
+	
+	(* check if there is a PostText *)
+	tempString = M2TeXToString[data["PostText"]];
+	If[
+		tempString != "",
+		string = string <> " " <> tempString;
+	];
 	
 	(* Add the command to string *)
 	dataTemp = data;
@@ -571,7 +584,7 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 			DeleteFile[FileNames[nameTemp <> "_*.png", $TemporaryDirectory]];
 	
 			(* Convert the pdf into png files *)
-			gs = "C:\\Program Files\\gs\\gs9.20\\bin\\gswin64c.exe";
+			gs = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe";
 			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
 			
 			(* Import png images *)
