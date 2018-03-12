@@ -472,8 +472,21 @@ M2TeXToString[M2TTikZCommand[data_]] := Module[{string, dataTemp},
 M2TeXTikZ[] := M2TeXEnvironment["tikzpicture"];
 
 (*** Axis for pgf plot ***)
-M2TeXTikZAxis[] := M2TeXTikZAxis[None];
-M2TeXTikZAxis[list_] := M2TeXEnvironment["axis", "ParameterList" -> {M2TeXOptionOptional[list]}]
+Options[M2TeXTikZAxis] = {
+	"Log" -> False
+};
+M2TeXTikZAxis[options___Rule] := M2TeXTikZAxis[None, options];
+M2TeXTikZAxis[list_,OptionsPattern[]] := M2TeXEnvironment[
+    Switch[OptionValue["Log"],
+        False, "axis",
+        "x", "semilogxaxis",
+        "y", "semilogyaxis",
+        "xy", "loglogaxis",
+        "loglog", "loglogaxis",
+        _, Print["Error, Log option does not exist!"]
+    ],
+    "ParameterList" -> {M2TeXOptionOptional[list]}
+]
 
 (*** Plot datapoints ***)
 Options[M2TeXTikZPlot] = {
