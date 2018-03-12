@@ -43,6 +43,14 @@ M2TeXPlotToPoints::usage="TODO";
 Begin["`Private`"];
 
 
+(********* Global variables in this function *********)
+(*** The global document ***)
+M2Tdocument; 
+
+(*** A counter for how much data points contain non numeric values ***)
+M2TNonNumericCounter = 0;
+M2TPrintNonNumeric = True;
+
 
 (********* Helper and compatibility functions *********)
 
@@ -477,15 +485,15 @@ Options[M2TeXTikZAxis] = {
 };
 M2TeXTikZAxis[options___Rule] := M2TeXTikZAxis[None, options];
 M2TeXTikZAxis[list_,OptionsPattern[]] := M2TeXEnvironment[
-    Switch[OptionValue["Log"],
-        False, "axis",
-        "x", "semilogxaxis",
-        "y", "semilogyaxis",
-        "xy", "loglogaxis",
-        "loglog", "loglogaxis",
-        _, Print["Error, Log option does not exist!"]
-    ],
-    "ParameterList" -> {M2TeXOptionOptional[list]}
+	Switch[OptionValue["Log"],
+		False, "axis",
+		"x", "semilogxaxis",
+		"y", "semilogyaxis",
+		"xy", "loglogaxis",
+		"loglog", "loglogaxis",
+		_, Print["Error, Log option does not exist!"]
+	],
+	"ParameterList" -> {M2TeXOptionOptional[list]}
 ]
 
 (*** Plot datapoints ***)
@@ -518,10 +526,13 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
 	(* Get the coordinates *)
 	string = "coordinates{%\n";
 	Do[
-		(* Check if both values are nummeric, otherwise skip the row *)
+		(* Check if both values are numeric, otherwise skip the row *)
 		If[ MemberQ[NumericQ /@ coord, False],
 			(* coord is not numeric *)
-			Print["Non numeric value!"],
+			If[ M2TPrintNonNumeric,
+				Print["Non numeric value!"],
+				M2TNonNumericCounter++;
+			],
 			string = string <> "(" <> ToString@CForm[N[coord[[1]] ]] <> ", " <> ToString@CForm[N[coord[[2]] ]] <> ")%\n";
 		];
 	,{coord, data["Table"]}];
@@ -558,7 +569,8 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 		texFile,
 		pdfFile,
 		out,
-		outImage = {}
+		outImage = {},
+		outErrors
 	},
 	
 	(* The files will be compiled in the temp directory *)
@@ -567,6 +579,10 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	pdfFileTemp = FileNameJoin[{ $TemporaryDirectory, nameTemp <> ".pdf" }]; 
 	texFile = FileNameJoin[{ Directory[], name <> ".tex" }];
 	pdfFile = FileNameJoin[{ Directory[], name <> ".pdf" }];
+	
+	(* Deactivate the NonNumericPrint option *)
+	M2TPrintNonNumeric = False;
+	M2TNonNumericCounter = 0;
 	
 	(* Save the string to *.tex file *)
 	Export[ texFileTemp, M2TeXToString[environment], "Text" ];
@@ -582,7 +598,7 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	
 	(* Check if there were tex errors *)
 	If[ texErrorQ[out["StandardOutput"]],
-		Print["LaTeX Error!"];
+		(*Print["LaTeX Error!"];*)Null
 		,
 		(* Move the files *)
 		SaveOverwrite[pdfFileTemp, pdfFile];
@@ -605,10 +621,29 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 		];
 	];
 	
+	(* Print the M2TeX Errors *)
+	Print[StringForm[
+		"M2TeX summary:\n\t`` Non numeric values",
+		M2TNonNumericCounter
+	]];
+	
+	(* Reset the NonNumericPrint option *)
+	M2TPrintNonNumeric = True;
+	M2TNonNumericCounter = 0;
+	
+	(* Print the number of Errors / Warnings / Boxes *)
+	outErrors = getErrorWarningOverfull[ out[["StandardOutput"]] ];
+	Print[StringForm[
+		"LaTeX summary:\n\t`` Errors\n\t`` Warnings\n\t`` OverfullBoxes",
+		Length[outErrors[[1]]],
+		Length[outErrors[[2]]],
+		Length[outErrors[[3]]]
+	]];
+	
 	(* Return the results *)
 	{
 		outImage,
-		getErrorWarningOverfull[ out[["StandardOutput"]] ]
+		outErrors
 	}
 ];
 
