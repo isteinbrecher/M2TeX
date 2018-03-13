@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     69458,       1659]
-NotebookOptionsPosition[     58685,       1513]
-NotebookOutlinePosition[     59061,       1529]
-CellTagsIndexPosition[     59018,       1526]
+NotebookDataLength[     68778,       1661]
+NotebookOptionsPosition[     57534,       1510]
+NotebookOutlinePosition[     57910,       1526]
+CellTagsIndexPosition[     57867,       1523]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -1208,49 +1208,23 @@ the tex file in the working directory\
 
 Cell[BoxData[
  RowBox[{"M2TeXGeneratePDF", "[", 
-  RowBox[{"\"\<M2TeXDemo_plot_1\>\"", ",", "doc", ",", 
-   RowBox[{"\"\<SaveTeX\>\"", "\[Rule]", "True"}]}], "]"}]], "Input",
- CellChangeTimes->{{3.7226224435217514`*^9, 3.7226224438917522`*^9}, {
-   3.7226225639349203`*^9, 3.722622572164932*^9}, 3.7226226807750835`*^9, {
-   3.722622726375148*^9, 3.722622747485177*^9}, {3.722622789265236*^9, 
-   3.722622789985237*^9}, {3.722622841495309*^9, 3.7226228431053114`*^9}, {
-   3.722623782956627*^9, 3.722623807066661*^9}, {3.7226239069968004`*^9, 
-   3.7226239439368525`*^9}, {3.7226242988823495`*^9, 
-   3.7226243597234344`*^9}, {3.722624695613905*^9, 3.7226246957339053`*^9}, 
-   3.7226247584039927`*^9, {3.7226251925146008`*^9, 3.722625192614601*^9}, {
-   3.7226258066974607`*^9, 3.7226258089974637`*^9}, 3.7226566249270773`*^9, {
-   3.722656659855075*^9, 3.7226566790541725`*^9}, {3.7226572689069104`*^9, 
-   3.722657269146924*^9}, 3.7226581554926205`*^9, {3.722743658906582*^9, 
-   3.7227436711365986`*^9}, {3.722743708176651*^9, 
-   3.7227437122866564`*^9}},ExpressionUUID->"45ed4a81-9824-4abc-8c68-\
-c77e2e9a2447"],
+  RowBox[{"\"\<M2TeXDemo_plot\>\"", ",", "doc", ",", 
+   RowBox[{"\"\<SaveTeX\>\"", "\[Rule]", "True"}]}], "]"}]], "Input",Expressio\
+nUUID->"45ed4a81-9824-4abc-8c68-c77e2e9a2447"],
 
 Cell["\<\
 This option \[OpenCurlyDoubleQuote]OutputPDF\[CloseCurlyDoubleQuote] imports \
 the pdf file and not a png copy. Use with caution, there are some problems \
 when importing pdfs into Mathematica, see the non clipped plots
 
-NOTE: Not working since Mathematica 11\
-\>", "Text",
- CellChangeTimes->{{3.7226257327453566`*^9, 3.7226257477353783`*^9}, {
-  3.722658141091797*^9, 3.722658147653172*^9}, {3.7226582536672354`*^9, 
-  3.722658254931308*^9}, {3.7226612937558746`*^9, 3.722661295723987*^9}, {
-  3.7298332913939*^9, 3.729833299663911*^9}, {3.729835489336712*^9, 
-  3.7298354924467163`*^9}},ExpressionUUID->"ec62349a-c49b-4103-9308-\
-fc6744ef0192"],
+NOTE: Not working since Mathematica 11, deactivated\
+\>", "Text",ExpressionUUID->"ec62349a-c49b-4103-9308-fc6744ef0192"],
 
 Cell[BoxData[
- RowBox[{"(*", 
-  RowBox[{"M2TeXGeneratePDF", "[", 
-   RowBox[{"\"\<M2TeXDemo_plot_2\>\"", ",", "doc", ",", 
-    RowBox[{"\"\<OutputPDF\>\"", "\[Rule]", "True"}]}], "]"}], 
-  "*)"}]], "Input",
- CellChangeTimes->{{3.7226257559553895`*^9, 3.722625761335397*^9}, {
-  3.722625818647477*^9, 3.7226258431775117`*^9}, {3.722658159843869*^9, 
-  3.722658162324011*^9}, {3.7227436745566034`*^9, 3.7227436760166054`*^9}, {
-  3.7227437155166607`*^9, 3.7227437160766616`*^9}, {3.7298332617318583`*^9, 
-  3.7298332861538925`*^9}},ExpressionUUID->"e8f17f77-19d3-41aa-a5ee-\
-d29d63ca4570"],
+ RowBox[{"M2TeXGeneratePDF", "[", 
+  RowBox[{"\"\<M2TeXDemo_plot\>\"", ",", "doc", ",", 
+   RowBox[{"\"\<OutputPDF\>\"", "\[Rule]", "True"}]}], "]"}]], "Input",Express\
+ionUUID->"e8f17f77-19d3-41aa-a5ee-d29d63ca4570"],
 
 Cell["\<\
 When an error / warning / overflow box occurs the messages are output in the \
@@ -1333,16 +1307,55 @@ Cell["Compile global document", "Text",
   3.7226749204216275`*^9}},ExpressionUUID->"21dfd164-8ed0-4845-ac1e-\
 6e5157845099"],
 
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+  "demoText", "=", 
+   "\"\<This is a text with a formular $\\\\int_a^b 1 \\\\mathrm d x = b - a$\
+\>\""}], ";"}]], "Input",ExpressionUUID->"71d9de53-4bd9-4403-ac6d-\
+72a4615840ed"],
+
 Cell[BoxData[{
  RowBox[{"M2TeXSetGlobal", "[", "\"\<standalone\>\"", 
   "]"}], "\[IndentingNewLine]", 
- RowBox[{"M2TeXAddToEnvironment", "[", "\"\<Text\>\"", 
+ RowBox[{"M2TeXAddToEnvironment", "[", "demoText", 
   "]"}], "\[IndentingNewLine]", 
- RowBox[{"M2TeXGeneratePDF", "[", "\"\<M2TeXDemo_text\>\"", "]"}]}], "Input",
- CellChangeTimes->{{3.722674939912655*^9, 3.7226750248827744`*^9}, {
-  3.722743733436686*^9, 
-  3.7227437352766886`*^9}},ExpressionUUID->"1547f97d-fc80-468a-bd52-\
-65ba98cfdba3"]
+ RowBox[{"M2TeXGeneratePDF", "[", "\"\<M2TeXDemo_text\>\"", "]"}]}], "Input",E\
+xpressionUUID->"1547f97d-fc80-468a-bd52-65ba98cfdba3"],
+
+Cell["The quiet option does not print anything", "Text",ExpressionUUID->"d9490c26-0709-4f2a-865e-5999a063af2b"],
+
+Cell[BoxData[{
+ RowBox[{"M2TeXSetGlobal", "[", "\"\<standalone\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", "demoText", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXGeneratePDF", "[", 
+  RowBox[{"\"\<M2TeXDemo_text\>\"", ",", 
+   RowBox[{"\"\<Quiet\>\"", "\[Rule]", "True"}]}], "]"}]}], "Input",Expression\
+UUID->"5ba0e6a2-b75d-427f-8503-0ec85a7deda1"],
+
+Cell["Set the DPI of the PNG image, default is 360", "Text",ExpressionUUID->"1a378207-9025-4e9f-8381-74e40981c9d0"],
+
+Cell[BoxData[{
+ RowBox[{"M2TeXSetGlobal", "[", "\"\<standalone\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", "\"\<\\\\LaTeX\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"Table", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXGeneratePDF", "[", 
+     RowBox[{"\"\<M2TeXDemo_text_2\>\"", ",", 
+      RowBox[{"\"\<Quiet\>\"", "\[Rule]", "True"}], ",", 
+      RowBox[{"\"\<PNGDPI\>\"", "\[Rule]", "dpi"}]}], "]"}], "[", 
+    RowBox[{"[", 
+     RowBox[{"1", ",", "1"}], "]"}], "]"}], "\[IndentingNewLine]", ",", 
+   RowBox[{"{", 
+    RowBox[{"dpi", ",", 
+     RowBox[{"{", 
+      RowBox[{"20", ",", "80", ",", "320", ",", "1280"}], "}"}]}], "}"}]}], 
+  "]"}]}], "Input",ExpressionUUID->"7d8d68e9-06a0-4293-97e5-999ea4f59bcb"]
 }, Open  ]]
 }, Open  ]],
 
@@ -1490,25 +1503,9 @@ Cell[BoxData[{
      RowBox[{"Length", "@", "lines"}]}], "}"}]}], 
   "]"}], "\[IndentingNewLine]", 
  RowBox[{"M2TeXGeneratePDF", "[", 
-  RowBox[{"\"\<M2TeXDemo_plot_3\>\"", ",", 
-   RowBox[{"\"\<SaveTeX\>\"", "\[Rule]", "True"}]}], "]"}]}], "Input",
- CellChangeTimes->{{3.7226754405071993`*^9, 3.7226755838943586`*^9}, {
-   3.7226756414626513`*^9, 3.722675667814159*^9}, {3.7226757702930202`*^9, 
-   3.722675787479003*^9}, {3.722675943268914*^9, 3.7226760189322414`*^9}, {
-   3.722676096909607*^9, 3.722676100459612*^9}, {3.7226761515793133`*^9, 
-   3.722676154437476*^9}, {3.722676208637576*^9, 3.7226762125678015`*^9}, {
-   3.722676267008703*^9, 3.72267640452889*^9}, {3.722676489074755*^9, 
-   3.7226764955201235`*^9}, {3.7226765412797413`*^9, 
-   3.7226765456489906`*^9}, {3.7226766495219316`*^9, 
-   3.7226767167517776`*^9}, {3.7226767517757807`*^9, 3.7226769697592487`*^9}, 
-   3.7226770344639497`*^9, {3.7226770648276863`*^9, 3.722677129005357*^9}, {
-   3.722677162237258*^9, 3.722677216172343*^9}, {3.722677312662683*^9, 
-   3.722677333112853*^9}, {3.7226775200425444`*^9, 3.72267752119361*^9}, {
-   3.7226776082805915`*^9, 3.722677641912515*^9}, {3.722682067759551*^9, 
-   3.722682171200696*^9}, {3.722682622424328*^9, 3.722682626644334*^9}, {
-   3.722682854918475*^9, 3.7226828601807756`*^9}, {3.7227437443767014`*^9, 
-   3.7227437489867077`*^9}},ExpressionUUID->"a367d196-4a5f-4873-8a02-\
-f657362286b2"]
+  RowBox[{"\"\<M2TeXDemo_plot_color\>\"", ",", 
+   RowBox[{"\"\<SaveTeX\>\"", "\[Rule]", "False"}]}], "]"}]}], "Input",Express\
+ionUUID->"a367d196-4a5f-4873-8a02-f657362286b2"]
 }, Open  ]]
 },
 WindowSize->{942, 1102},
@@ -1643,23 +1640,28 @@ Cell[41198, 1102, 223, 5, 44, "Text",ExpressionUUID->"b686f2bc-f54b-4e3e-93fc-bc
 Cell[41424, 1109, 2144, 45, 188, "Input",ExpressionUUID->"97ff68b4-036a-4ebd-afec-25622b8f713d"],
 Cell[43571, 1156, 1573, 39, 188, "Input",ExpressionUUID->"88419719-b75d-402e-8e26-938ee7ad8b4d"],
 Cell[45147, 1197, 459, 9, 73, "Text",ExpressionUUID->"204676e3-6ec2-4c3e-a022-1cbfb28e4a06"],
-Cell[45609, 1208, 1117, 17, 37, "Input",ExpressionUUID->"45ed4a81-9824-4abc-8c68-c77e2e9a2447"],
-Cell[46729, 1227, 656, 12, 131, "Text",ExpressionUUID->"ec62349a-c49b-4103-9308-fc6744ef0192"],
-Cell[47388, 1241, 587, 11, 37, "Input",ExpressionUUID->"e8f17f77-19d3-41aa-a5ee-d29d63ca4570"],
-Cell[47978, 1254, 298, 7, 44, "Text",ExpressionUUID->"b8d1ec10-f281-4a90-be4c-511d000be646"],
-Cell[48279, 1263, 967, 21, 88, "Input",ExpressionUUID->"a2a1dc0f-c495-42ef-82e0-18ce3e921e79"],
-Cell[49249, 1286, 834, 19, 113, "Input",ExpressionUUID->"a71375b3-3362-4dac-a0a3-8eef432bde36"],
-Cell[50086, 1307, 960, 21, 138, "Input",ExpressionUUID->"641e9d50-cc65-4a17-96e3-a2a901b20b18"],
-Cell[51049, 1330, 167, 3, 44, "Text",ExpressionUUID->"21dfd164-8ed0-4845-ac1e-6e5157845099"],
-Cell[51219, 1335, 448, 9, 88, "Input",ExpressionUUID->"1547f97d-fc80-468a-bd52-65ba98cfdba3"]
+Cell[45609, 1208, 229, 4, 37, "Input",ExpressionUUID->"45ed4a81-9824-4abc-8c68-c77e2e9a2447"],
+Cell[45841, 1214, 351, 6, 131, "Text",ExpressionUUID->"ec62349a-c49b-4103-9308-fc6744ef0192"],
+Cell[46195, 1222, 231, 4, 37, "Input",ExpressionUUID->"e8f17f77-19d3-41aa-a5ee-d29d63ca4570"],
+Cell[46429, 1228, 298, 7, 44, "Text",ExpressionUUID->"b8d1ec10-f281-4a90-be4c-511d000be646"],
+Cell[46730, 1237, 967, 21, 88, "Input",ExpressionUUID->"a2a1dc0f-c495-42ef-82e0-18ce3e921e79"],
+Cell[47700, 1260, 834, 19, 113, "Input",ExpressionUUID->"a71375b3-3362-4dac-a0a3-8eef432bde36"],
+Cell[48537, 1281, 960, 21, 138, "Input",ExpressionUUID->"641e9d50-cc65-4a17-96e3-a2a901b20b18"],
+Cell[49500, 1304, 167, 3, 44, "Text",ExpressionUUID->"21dfd164-8ed0-4845-ac1e-6e5157845099"],
+Cell[49670, 1309, 216, 6, 37, "Input",ExpressionUUID->"71d9de53-4bd9-4403-ac6d-72a4615840ed"],
+Cell[49889, 1317, 322, 6, 88, "Input",ExpressionUUID->"1547f97d-fc80-468a-bd52-65ba98cfdba3"],
+Cell[50214, 1325, 111, 0, 44, "Text",ExpressionUUID->"d9490c26-0709-4f2a-865e-5999a063af2b"],
+Cell[50328, 1327, 390, 8, 88, "Input",ExpressionUUID->"5ba0e6a2-b75d-427f-8503-0ec85a7deda1"],
+Cell[50721, 1337, 115, 0, 44, "Text",ExpressionUUID->"1a378207-9025-4e9f-8381-74e40981c9d0"],
+Cell[50839, 1339, 780, 18, 138, "Input",ExpressionUUID->"7d8d68e9-06a0-4293-97e5-999ea4f59bcb"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[51716, 1350, 214, 4, 126, "Title",ExpressionUUID->"0f60dd3a-8953-4b63-8680-c9c1546b5588"],
-Cell[51933, 1356, 353, 7, 44, "Text",ExpressionUUID->"57027dfe-7ae7-4247-96ee-2434c7c063f2"],
-Cell[52289, 1365, 1215, 28, 113, "Input",ExpressionUUID->"ff9f849a-a73d-41ac-b36c-4fbd0fefc942"],
-Cell[53507, 1395, 989, 26, 113, "Input",ExpressionUUID->"22d911d3-e769-404a-83bc-fc53f8ce9622"],
-Cell[54499, 1423, 4170, 87, 588, "Input",ExpressionUUID->"a367d196-4a5f-4873-8a02-f657362286b2"]
+Cell[51668, 1363, 214, 4, 126, "Title",ExpressionUUID->"0f60dd3a-8953-4b63-8680-c9c1546b5588"],
+Cell[51885, 1369, 353, 7, 44, "Text",ExpressionUUID->"57027dfe-7ae7-4247-96ee-2434c7c063f2"],
+Cell[52241, 1378, 1215, 28, 113, "Input",ExpressionUUID->"ff9f849a-a73d-41ac-b36c-4fbd0fefc942"],
+Cell[53459, 1408, 989, 26, 113, "Input",ExpressionUUID->"22d911d3-e769-404a-83bc-fc53f8ce9622"],
+Cell[54451, 1436, 3067, 71, 588, "Input",ExpressionUUID->"a367d196-4a5f-4873-8a02-f657362286b2"]
 }, Open  ]]
 }
 ]

@@ -558,7 +558,9 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
 (*** Create the pdf file ***)
 Options[M2TeXGeneratePDF] = {
 	"SaveTeX" -> False,
-	"OutputPDF" -> False
+	"OutputPDF" -> False,
+	"PNGDPI" -> 360,
+	"Quiet" -> False
 };
 M2TeXGeneratePDF[name_, options___Rule] := M2TeXGeneratePDF[name, M2Tdocument, options];
 M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
@@ -606,7 +608,8 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 		(* Get the results *)
 		If[ OptionValue["OutputPDF"],
 			(* Load the pdf file *)
-			outImage = Import[pdfFileTemp];
+			(*outImage = Import[pdfFileTemp];*)
+			outImage = "The option OutputPDF is currently not available!";
 			,
 	
 			(* Delete all image files in temp directory *)
@@ -614,7 +617,7 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	
 			(* Convert the pdf into png files *)
 			gs = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe";
-			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r360", "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r"<>ToString[OptionValue["PNGDPI"]], "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
 			
 			(* Import png images *)
 			outImage = Import /@ FileNames[ nameTemp <> "_*.png", $TemporaryDirectory];
@@ -622,9 +625,11 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	];
 	
 	(* Print the M2TeX Errors *)
-	Print[StringForm[
-		"M2TeX summary:\n\t`` Non numeric values",
-		M2TNonNumericCounter
+	If[ !OptionValue["Quiet"],
+		Print[StringForm[
+			"M2TeX summary:\n\t`` Non numeric values",
+			M2TNonNumericCounter
+		]
 	]];
 	
 	(* Reset the NonNumericPrint option *)
@@ -633,11 +638,13 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	
 	(* Print the number of Errors / Warnings / Boxes *)
 	outErrors = getErrorWarningOverfull[ out[["StandardOutput"]] ];
-	Print[StringForm[
-		"LaTeX summary:\n\t`` Errors\n\t`` Warnings\n\t`` OverfullBoxes",
-		Length[outErrors[[1]]],
-		Length[outErrors[[2]]],
-		Length[outErrors[[3]]]
+	If[ !OptionValue["Quiet"],
+		Print[StringForm[
+			"LaTeX summary:\n\t`` Errors\n\t`` Warnings\n\t`` OverfullBoxes",
+			Length[outErrors[[1]]],
+			Length[outErrors[[2]]],
+			Length[outErrors[[3]]]
+		]
 	]];
 	
 	(* Return the results *)
