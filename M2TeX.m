@@ -598,10 +598,9 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	If[FileExistsQ[pdfFileTemp], DeleteFile[pdfFileTemp];];
 	out = RunProcess[{"pdflatex", "-halt-on-error", "--interaction=nonstopmode", texFileTemp}, ProcessDirectory -> $TemporaryDirectory];
 	
-	(* Check if there were tex errors *)
-	If[ texErrorQ[out["StandardOutput"]],
-		(*Print["LaTeX Error!"];*)Null
-		,
+	(* Check if pdf file was created *)
+	If[ FileExistsQ[pdfFileTemp],
+	
 		(* Move the files *)
 		SaveOverwrite[pdfFileTemp, pdfFile];
 		
