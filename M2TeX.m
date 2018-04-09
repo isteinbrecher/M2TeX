@@ -429,10 +429,10 @@ M2TeXTemplates["article"] := Module[
 ];
 
 (*** standalone template ***)
-M2TeXTemplates["standalone"] := Module[
+M2TeXTemplates["standalone", border_:"0"] := Module[
 	{ documentClass, preamble },
 	
-	documentClass = M2TeXCommand["documentclass", "standalone", "class=scrartcl"];
+	documentClass = M2TeXCommand["documentclass", "standalone", {"class=scrartcl", "border=" <> border}];
 	preamble = {
 		M2TeXPackage["fontenc", "T1"],
 		M2TeXPackage["inputenc", "utf8"],
