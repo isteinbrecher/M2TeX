@@ -1,0 +1,1025 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     41742,       1017]
+NotebookOptionsPosition[     35187,        915]
+NotebookOutlinePosition[     35533,        930]
+CellTagsIndexPosition[     35490,        927]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["M2TeX testing", "Title",ExpressionUUID->"c45ee329-1f46-461a-9e6a-7c35b4624e4f"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"<<", "M2TeX`"}]}], "Input",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-\
+27c077e1356b"],
+
+Cell[CellGroupData[{
+
+Cell["Testing functions", "Section",ExpressionUUID->"00030b57-41f7-4e99-b76a-fb5ec45a8a66"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"testM2TexCounterTotal", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"testM2TexCounterFail", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"testM2Tex", "[", 
+   RowBox[{"var1_", ",", "var2_"}], "]"}], ":=", 
+  RowBox[{"(", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"testM2TexCounterTotal", "++"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"var1", "===", "var2"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"Text", "[", 
+       RowBox[{"\"\<Pass\>\"", ",", 
+        RowBox[{"Background", "\[Rule]", "Green"}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"(", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"Text", "[", 
+         RowBox[{"\"\<Fail\>\"", ",", 
+          RowBox[{"Background", "\[Rule]", "Red"}]}], "]"}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"testM2TexCounterFail", "++"}], ";"}], "\[IndentingNewLine]", 
+       ")"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+   ")"}]}], "\[IndentingNewLine]", 
+ RowBox[{"testM2TexSummary", ":=", 
+  RowBox[{"(", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<Total of \>\"", "<>", 
+      RowBox[{"ToString", "[", "testM2TexCounterTotal", "]"}], "<>", 
+      "\"\< Tests!\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<    Total of \>\"", "<>", 
+      RowBox[{"ToString", "[", "testM2TexCounterFail", "]"}], "<>", 
+      "\"\< failed Tests!\>\""}], "]"}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<    Total of \>\"", "<>", 
+      RowBox[{"ToString", "[", 
+       RowBox[{"testM2TexCounterTotal", "-", "testM2TexCounterFail"}], "]"}], 
+      "<>", "\"\< passed Tests!\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
+   ")"}]}]}], "Input",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Test cases", "Section",ExpressionUUID->"759e6fef-9f27-4ca8-9902-d3c0c854fc14"],
+
+Cell[CellGroupData[{
+
+Cell["Text", "Subsection",ExpressionUUID->"43d08db3-5c7b-4049-97cf-203e3782d810"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXText", "[", "\[IndentingNewLine]", 
+     RowBox[{"\"\<stuff\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Header\>\"", "\[Rule]", 
+       RowBox[{"{", "}"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<NewLineCharacter\>\"", "\[Rule]", "\"\<\\n\>\""}]}], 
+     "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<stuff\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["List", "Subsection",ExpressionUUID->"c3198868-0607-40eb-8bd9-ca951e4555cf"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXList", "[", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"\"\<value\>\"", ",", "\"\<value2\>\""}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<Seperator\>\"", "\[Rule]", "\"\<<>\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<OpenCloseCharacter\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"\"\<<Open>\>\"", ",", "\"\<<Close>\>\""}], "}"}]}]}], 
+     "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<<Open>value<>value2<Close>\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"dcf26cb6-6ce0-48b2-\
+a163-7586284d83ae"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXList", "[", "None", "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
+ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Options", "Subsection",ExpressionUUID->"cf22e51d-9ad6-4a9c-81ac-a6a0c890d803"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXOption", "[", "\"\<value\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<{value}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"e1f79cd5-58b9-469c-\
+83ee-6ff37e8c1db8"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXOption", "[", 
+     RowBox[{"{", 
+      RowBox[{"\"\<value\>\"", ",", 
+       RowBox[{"{", 
+        RowBox[{"\"\<op2\>\"", ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<op3\>\"", ",", "\"\<op4\>\""}], "}"}]}], "}"}]}], 
+      "}"}], "]"}], "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<{value, op2, op3, op4}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
+ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXOptionOptional", "[", 
+     RowBox[{"{", 
+      RowBox[{"\"\<optional1\>\"", ",", "\"\<optional2\>\""}], "}"}], "]"}], "//",
+     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<[optional1, optional2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
+ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Commands", "Subsection",ExpressionUUID->"c25a11d6-35b3-487e-84fb-f31c08994096"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", "\[IndentingNewLine]", 
+     RowBox[{"\"\<dostuff\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<Parameter\>\"", "\[Rule]", "\"\<val1\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<ParameterOptional\>\"", "\[Rule]", "\"\<val2\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<ParameterList\>\"", "\[Rule]", "None"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<StartCharacter\>\"", "\[Rule]", "\"\<<\\\\>\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<EndCharacter\>\"", "\[Rule]", "\"\<</>\>\""}]}], 
+     "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<<\\\\>dostuff[val2]{val1}</>\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"2a27f311-5a12-43d9-\
+84e9-88a415f2f904"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", "\[IndentingNewLine]", 
+     RowBox[{"\"\<dostuff\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<ParameterList\>\"", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"M2TeXOption", "[", 
+          RowBox[{"{", 
+           RowBox[{"\"\<op1\>\"", ",", "\"\<op11\>\""}], "}"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"M2TeXOptionOptional", "[", 
+          RowBox[{"{", 
+           RowBox[{"\"\<op2\>\"", ",", "\"\<op22\>\""}], "}"}], "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"M2TeXOption", "[", "\"\<op3\>\"", "]"}]}], 
+        "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\dostuff{op1, op11}[op2, op22]{op3}\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", "\"\<dostuff\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<\\\\dostuff\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"1ddcc0af-7ea2-41a0-\
+951d-983cd787ac2d"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", 
+     RowBox[{"\"\<dostuff\>\"", ",", "\"\<opt\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\dostuff{opt}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expres\
+sionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", 
+     RowBox[{"\"\<dostuff\>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<opt\>\"", ",", "\"\<OPT\>\""}], "}"}], ",", 
+      "\"\<opt2\>\""}], "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<\\\\dostuff[opt2]{opt, OPT}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"6cd2838f-4551-417b-\
+90c5-cd7c269ed71d"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXCommand", "[", 
+     RowBox[{"\"\<dostuff\>\"", ",", ",", "\"\<opt2\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\dostuff[opt2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expre\
+ssionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXPackage", "[", 
+     RowBox[{"\"\<name\>\"", ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<opt1\>\"", ",", "\"\<opt2\>\""}], "}"}]}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\usepackage[opt1, opt2]{name}\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Environments", "Subsection",ExpressionUUID->"6bf20517-ef3e-44f6-9366-357c43e0dd74"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXEnvironment", "[", "\[IndentingNewLine]", 
+     RowBox[{"\"\<document\>\"", ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<ParameterList\>\"", "\[Rule]", 
+       RowBox[{"{", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"M2TeXOption", "[", "\"\<op1\>\"", "]"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{"M2TeXOptionOptional", "[", "\"\<op2\>\"", "]"}]}], 
+        "\[IndentingNewLine]", "}"}]}], ",", "\[IndentingNewLine]", 
+      RowBox[{"\"\<StartCommand\>\"", "\[Rule]", "\"\<START\>\""}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"\"\<EndCommand\>\"", "\[Rule]", "\"\<END\>\""}]}], 
+     "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", "\"\<START{op1}[op2]\\nEND\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"32bb3a29-86b6-43f7-\
+8feb-9227f1eb21f1"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\end{document}\>\""}], "\[IndentingNewLine]",
+   "]"}]], "Input",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXEnvironment", "[", 
+     RowBox[{"\"\<document\>\"", ",", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"M2TeXOption", "[", "\"\<op1\>\"", "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"M2TeXOptionOptional", "[", "\"\<op2\>\"", "]"}]}], 
+       "\[IndentingNewLine]", "}"}]}], "]"}], "//", "M2TeXToString"}], ",", 
+   "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}{op1}[op2]\\n\\\\end{document}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"261d7c4d-732f-482a-\
+ae3e-cf6da814a9a9"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXCommand", "[", 
+    RowBox[{"\"\<section\>\"", ",", "\"\<Introduction\>\""}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Bla bla bla...\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\section{Introduction}\\nBla bla bla...\\n\\\
+\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID\
+->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<picture\>\"", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Bla bla bla...\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\begin{picture}\\nBla bla \
+bla...\\n\\\\end{picture}\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<picture\>\"", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<picture\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXCloseActiveEnvironment", "[", "doc", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Bla bla bla...\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\begin{picture}\\npicture\\n\\\\end{picture}\
+\\nBla bla bla...\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<picture\>\"", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Text1\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXCloseActiveEnvironment", "[", "doc", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Text2\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXCloseActiveEnvironment", "[", "doc", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<Text3\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\begin{picture}\\nText1\\n\\\\end{picture}\\\
+nText2\\nText3\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<picture\>\"", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<pictureChild\>\"", "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXCloseAll", "[", "doc", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<content\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\n\\\\begin{picture}\\n\\\\begin{pictureChild}\\n\
+\\\\end{pictureChild}\\n\\\\end{picture}\\ncontent\\n\\\\end{document}\>\""}],
+   "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"7310118c-10fd-\
+4d2a-a153-16d7d219c6d6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXText", "[", 
+    RowBox[{"\"\<This is a command \>\"", " ", ",", 
+     RowBox[{"\"\<NewLineCharacter\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXCommand", "[", 
+    RowBox[{"\"\<Text\>\"", ",", 
+     RowBox[{"\"\<NewLineCharacter\>\"", "\[Rule]", "\"\<\>\""}]}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\< and this is in the same line\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{document}\\nThis is a command \\\\Text and this is in the \
+same line\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",\
+ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Documents", "Subsection",ExpressionUUID->"8b394c00-5686-4666-9f11-f7c93024accf"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"doc", "=", 
+   RowBox[{"M2TeXDocument", "[", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"M2TeXCommand", "[", 
+      RowBox[{
+      "\"\<documentclass\>\"", ",", "\"\<scrartcl\>\"", ",", "\"\<11pt\>\""}],
+       "]"}], ",", "\[IndentingNewLine]", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"M2TeXPackage", "[", "\"\<amsmath\>\"", "]"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"M2TeXPackage", "[", 
+        RowBox[{"\"\<MinionPro\>\"", ",", "\"\<lf\>\""}], "]"}]}], 
+      "\[IndentingNewLine]", "}"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", "\"\<content\>\""}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AppendTo", "[", 
+   RowBox[{
+    RowBox[{"doc", "[", 
+     RowBox[{"[", 
+      RowBox[{"1", ",", " ", "\"\<Header\>\""}], "]"}], "]"}], ",", 
+    "\"\<% created with M2TeX\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXEmpty", "[", 
+    RowBox[{"{", 
+     RowBox[{"M2TeXPackage", "[", "\"\<package\>\"", "]"}], "}"}], "]"}]}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXCommand", "[", 
+    RowBox[{"\"\<new\>\"", ",", 
+     RowBox[{"\"\<Header\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"M2TeXPackage", "[", "\"\<color\>\"", "]"}], "}"}]}]}], 
+    "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", 
+  RowBox[{"doc", ",", 
+   RowBox[{"M2TeXCommand", "[", 
+    RowBox[{"\"\<new\>\"", ",", 
+     RowBox[{"\"\<Header\>\"", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"M2TeXPackage", "[", "\"\<color2\>\"", "]"}], "}"}]}]}], 
+    "]"}]}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"M2TeXAddToEnvironment", "[", 
+   RowBox[{"doc", ",", 
+    RowBox[{"M2TeXCommand", "[", 
+     RowBox[{"\"\<new\>\"", ",", 
+      RowBox[{"\"\<Header\>\"", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"M2TeXPackage", "[", "\"\<color\>\"", "]"}], "}"}]}]}], 
+     "]"}]}], "]"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass[11pt]{scrartcl}\\n\\n\\\\usepackage{amsmath}\\n\\\\\
+usepackage[lf]{MinionPro}\\n% created with M2TeX\\n\\\\usepackage{package}\\n\
+\\\\usepackage{color}\\n\\\\usepackage{color2}\\n\\n\\\\begin{document}\\\
+ncontent\\n\\\\new\\n\\\\new\\n\\\\new\\n\\\\end{document}\>\""}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"bbb7dc65-139a-4184-\
+b8b4-563e0ddb3513"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Document templates", "Subsection",ExpressionUUID->"116fed8c-18a3-44b8-99cc-060f1fa38771"],
+
+Cell["Following templates are available", "Text",ExpressionUUID->"020a5e28-92dd-4507-92dc-e4b9b038761c"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTemplates", "[", "\"\<article\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass{scrartcl}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\\
+usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n\\n\\\\begin{document}\
+\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expression\
+UUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTemplates", "[", "\"\<standalone\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass[class=scrartcl, \
+border=0]{standalone}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\usepackage[utf8]{\
+inputenc}\\n\\\\usepackage{amsmath}\\n\\\\usepackage{tikz}\\n\\\\usepackage{\
+pgfplots}\\n\\\\pgfplotsset{compat=newest,tick label \
+style={font=\\\\footnotesize}}\\n\\n\\\\begin{document}\\n\\\\end{document}\>\
+\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"baf1fe11-4c62-\
+44ab-975c-9f795cdf6cdd"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["TikZ tools", "Subsection",ExpressionUUID->"2bc271d3-fc18-43b8-b795-8256b46ba1c9"],
+
+Cell["Command for TikZ", "Text",ExpressionUUID->"962fc07f-b0fd-4893-b383-6e514311d13f"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZCommand", "[", "\"\<node\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<\\\\node;\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"b4ae66dd-9f08-430e-\
+bbe8-43df92940933"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZCommand", "[", 
+     RowBox[{"\"\<node\>\"", ",", "\"\<at (0,0)\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\node at (0,0);\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expr\
+essionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZCommand", "[", 
+     RowBox[{"\"\<node\>\"", ",", "\"\<at (0,0)\>\"", ",", "\"\<black\>\""}], 
+     "]"}], "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\node[black] at (0,0);\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZCommand", "[", 
+     RowBox[{"\"\<node\>\"", ",", ",", "\"\<black\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\node[black];\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expres\
+sionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", "\"\<meins\>\"", "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{axis}[meins]\\n\\\\end{axis}\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", 
+     RowBox[{"\"\<Log\>\"", "\[Rule]", "False"}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{axis}\\n\\\\end{axis}\>\""}], "\[IndentingNewLine]", 
+  "]"}]], "Input",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", 
+     RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<x\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{semilogxaxis}\\n\\\\end{semilogxaxis}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"3a5f14c5-ffac-4eca-\
+9b93-a0956f8b71c5"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", 
+     RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<y\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{semilogyaxis}\\n\\\\end{semilogyaxis}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"f6b95aac-735a-4949-\
+98fe-00a0396648c5"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", 
+     RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<xy\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{loglogaxis}\\n\\\\end{loglogaxis}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"b6b6965a-6084-4c20-\
+a395-990e4dab596e"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZAxis", "[", 
+     RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<loglog\>\""}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{loglogaxis}\\n\\\\end{loglogaxis}\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"102c4d7a-5da7-4353-\
+92f9-5b3442e95297"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZPlot", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"1", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "4"}], "}"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<black\>\"", ",", "\"\<white\>\""}], "}"}]}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\addplot[black, white] coordinates{%\\n(1., 3.)%\\n(2., \
+4.)%\\n};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->\
+"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZPlot", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"1", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"a", ",", "4"}], "}"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<black\>\"", ",", "\"\<white\>\""}], "}"}], ",", 
+      RowBox[{"\"\<AddPlot\>\"", "\[Rule]", "True"}]}], "]"}], "//", 
+    "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\addplot+[black, white] coordinates{%\\n(1., 3.)%\\n};\>\""}], 
+  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"8df577a3-65e2-4813-\
+ad98-ce7459a12602"],
+
+Cell[BoxData[
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"M2TeXTikZPlot", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"1", ",", "3"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", "4"}], "}"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"\"\<black\>\"", ",", "\"\<white\>\""}], "}"}], ",", 
+      RowBox[{"\"\<PostText\>\"", "\[Rule]", "\"\<node{$A$}\>\""}]}], "]"}], "//",
+     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\addplot[black, white] coordinates{%\\n(1., 3.)%\\n(2., 4.)%\\n} \
+node{$A$};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->\
+"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Global document structure", "Subsection",ExpressionUUID->"12bb7837-a566-49b6-b140-98809d145341"],
+
+Cell[BoxData[{
+ RowBox[{"M2TeXSetGlobal", "[", 
+  RowBox[{"M2TeXEnvironment", "[", "\"\<doc\>\"", "]"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"M2TeXAddToEnvironment", "[", "\"\<text\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\begin{doc}\\ntext\\n\\\\end{doc}\>\""}], "\[IndentingNewLine]", 
+  "]"}]}], "Input",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
+
+Cell[BoxData[{
+ RowBox[{"M2TeXSetGlobal", "[", "\"\<article\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass{scrartcl}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\\
+usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n\\n\\\\begin{document}\
+\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",Expressio\
+nUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
+
+Cell[BoxData[{
+ RowBox[{"M2TeXSetGlobal", "[", "\"\<article\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"global", "=", 
+   RowBox[{"M2TeXGetGlobal", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"global", "[", 
+    RowBox[{"[", 
+     RowBox[{"1", ",", " ", "\"\<Header\>\""}], "]"}], "]"}], "=", 
+   RowBox[{"{", "\"\<% comment in header\>\"", "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"M2TeXSetGlobal", "[", "global", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass{scrartcl}\\n\\n% comment in \
+header\\n\\n\\\\begin{document}\\n\\\\end{document}\>\""}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"67982214-71e0-4a27-\
+9e36-508d0ccfaa3b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"M2TeXSetGlobal", "[", "\"\<article\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"M2TeXAddToEnvironment", "[", 
+   RowBox[{"M2TeXEmpty", "[", 
+    RowBox[{"{", 
+     RowBox[{
+     "\"\<% comment in header\>\"", ",", "\"\<% also comment in header\>\""}],
+      "}"}], "]"}], "]"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
+   "\"\<\\\\documentclass{scrartcl}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\\
+usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n% comment in \
+header\\n% also comment in \
+header\\n\\n\\\\begin{document}\\n\\\\end{document}\>\""}], 
+  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"51a018cb-c757-43d8-\
+96dc-c0a1ac9aeb90"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Get Lines from Plot", "Subsection",ExpressionUUID->"43247520-88f8-43ae-b4c1-e92a05de8101"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"plt", "=", 
+   RowBox[{"Plot", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"x", "^", "2"}], ",", 
+       RowBox[{"1", "/", "x"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x", ",", 
+       RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{
+          RowBox[{"-", "4"}], ",", "4"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"PlotPoints", "\[Rule]", "4"}], ",", 
+     RowBox[{"MaxRecursion", "\[Rule]", "1"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"M2TeXPlotToPoints", "[", "plt", "]"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.9999993333333334`"}], ",", "0.9999986666671111`"}], 
+        "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.6793982003750035`"}], ",", "0.46158191467279347`"}], 
+        "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.3587970674166737`"}], ",", "0.1287353355868051`"}], 
+        "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.01122870131251233`"}], ",", 
+         "0.00012608373316561611`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "5.436844846330497`*^-18"}], ",", 
+         "0.0037766576354959455`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.33633966479164906`", ",", "0.11312437011215885`"}], "}"}], 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"0.6681694990624912`", ",", "0.44645047947742045`"}], "}"}], 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"0.9999993333333334`", ",", "0.9999986666671111`"}], "}"}]}], 
+      "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.9999993333333334`"}], ",", 
+         RowBox[{"-", "1.000000666667111`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.6793982003750035`"}], ",", 
+         RowBox[{"-", "1.4718908578916396`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.3587970674166737`"}], ",", 
+         RowBox[{"-", "2.7870907842139427`"}]}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "0.3333333333333333`"}], ",", 
+         RowBox[{"-", "3.`"}]}], "}"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"0.3333333333333333`", ",", "3.`"}], "}"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"0.9999993333333334`", ",", "1.000000666667111`"}], "}"}]}], 
+      "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID\
+->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
+}, Open  ]]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Summary", "Section",ExpressionUUID->"f66e8d5f-89da-464b-bd7d-1d662e63e88f"],
+
+Cell[BoxData["testM2TexSummary"], "Input",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{944, 1102},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 85, 0, 96, "Title",ExpressionUUID->"c45ee329-1f46-461a-9e6a-7c35b4624e4f"],
+Cell[668, 24, 236, 6, 48, "Input",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-27c077e1356b"],
+Cell[CellGroupData[{
+Cell[929, 34, 91, 0, 67, "Section",ExpressionUUID->"00030b57-41f7-4e99-b76a-fb5ec45a8a66"],
+Cell[1023, 36, 1923, 43, 333, "Input",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[2983, 84, 84, 0, 53, "Section",ExpressionUUID->"759e6fef-9f27-4ca8-9902-d3c0c854fc14"],
+Cell[CellGroupData[{
+Cell[3092, 88, 81, 0, 53, "Subsection",ExpressionUUID->"43d08db3-5c7b-4049-97cf-203e3782d810"],
+Cell[3176, 90, 584, 11, 162, "Input",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3797, 106, 81, 0, 53, "Subsection",ExpressionUUID->"c3198868-0607-40eb-8bd9-ca951e4555cf"],
+Cell[3881, 108, 754, 17, 162, "Input",ExpressionUUID->"dcf26cb6-6ce0-48b2-a163-7586284d83ae"],
+Cell[4638, 127, 300, 6, 86, "Input",ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4975, 138, 84, 0, 53, "Subsection",ExpressionUUID->"cf22e51d-9ad6-4a9c-81ac-a6a0c890d803"],
+Cell[5062, 140, 322, 7, 86, "Input",ExpressionUUID->"e1f79cd5-58b9-469c-83ee-6ff37e8c1db8"],
+Cell[5387, 149, 541, 13, 86, "Input",ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
+Cell[5931, 164, 419, 9, 86, "Input",ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6387, 178, 85, 0, 53, "Subsection",ExpressionUUID->"c25a11d6-35b3-487e-84fb-f31c08994096"],
+Cell[6475, 180, 919, 18, 219, "Input",ExpressionUUID->"2a27f311-5a12-43d9-84e9-88a415f2f904"],
+Cell[7397, 200, 1015, 21, 219, "Input",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
+Cell[8415, 223, 329, 7, 86, "Input",ExpressionUUID->"1ddcc0af-7ea2-41a0-951d-983cd787ac2d"],
+Cell[8747, 232, 371, 8, 86, "Input",ExpressionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
+Cell[9121, 242, 473, 11, 86, "Input",ExpressionUUID->"6cd2838f-4551-417b-90c5-cd7c269ed71d"],
+Cell[9597, 255, 378, 8, 86, "Input",ExpressionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
+Cell[9978, 265, 452, 10, 86, "Input",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[10467, 280, 89, 0, 53, "Subsection",ExpressionUUID->"6bf20517-ef3e-44f6-9366-357c43e0dd74"],
+Cell[10559, 282, 957, 19, 238, "Input",ExpressionUUID->"32bb3a29-86b6-43f7-8feb-9227f1eb21f1"],
+Cell[11519, 303, 364, 7, 86, "Input",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
+Cell[11886, 312, 658, 15, 143, "Input",ExpressionUUID->"261d7c4d-732f-482a-ae3e-cf6da814a9a9"],
+Cell[12547, 329, 806, 18, 143, "Input",ExpressionUUID->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
+Cell[13356, 349, 779, 17, 143, "Input",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
+Cell[14138, 368, 989, 21, 181, "Input",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
+Cell[15130, 391, 1170, 24, 219, "Input",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
+Cell[16303, 417, 1049, 22, 200, "Input",ExpressionUUID->"7310118c-10fd-4d2a-a153-16d7d219c6d6"],
+Cell[17355, 441, 1131, 25, 162, "Input",ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18523, 471, 86, 0, 53, "Subsection",ExpressionUUID->"8b394c00-5686-4666-9f11-f7c93024accf"],
+Cell[18612, 473, 2732, 65, 409, "Input",ExpressionUUID->"bbb7dc65-139a-4184-b8b4-563e0ddb3513"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21381, 543, 95, 0, 53, "Subsection",ExpressionUUID->"116fed8c-18a3-44b8-99cc-060f1fa38771"],
+Cell[21479, 545, 104, 0, 34, "Text",ExpressionUUID->"020a5e28-92dd-4507-92dc-e4b9b038761c"],
+Cell[21586, 547, 489, 9, 105, "Input",ExpressionUUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
+Cell[22078, 558, 650, 12, 143, "Input",ExpressionUUID->"baf1fe11-4c62-44ab-975c-9f795cdf6cdd"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[22765, 575, 87, 0, 53, "Subsection",ExpressionUUID->"2bc271d3-fc18-43b8-b795-8256b46ba1c9"],
+Cell[22855, 577, 87, 0, 34, "Text",ExpressionUUID->"962fc07f-b0fd-4893-b383-6e514311d13f"],
+Cell[22945, 579, 328, 7, 86, "Input",ExpressionUUID->"b4ae66dd-9f08-430e-bbe8-43df92940933"],
+Cell[23276, 588, 379, 8, 86, "Input",ExpressionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
+Cell[23658, 598, 410, 8, 86, "Input",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
+Cell[24071, 608, 379, 8, 86, "Input",ExpressionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
+Cell[24453, 618, 357, 7, 86, "Input",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
+Cell[24813, 627, 384, 8, 86, "Input",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
+Cell[25200, 637, 406, 9, 86, "Input",ExpressionUUID->"3a5f14c5-ffac-4eca-9b93-a0956f8b71c5"],
+Cell[25609, 648, 406, 9, 86, "Input",ExpressionUUID->"f6b95aac-735a-4949-98fe-00a0396648c5"],
+Cell[26018, 659, 403, 9, 86, "Input",ExpressionUUID->"b6b6965a-6084-4c20-a395-990e4dab596e"],
+Cell[26424, 670, 407, 9, 86, "Input",ExpressionUUID->"102c4d7a-5da7-4353-92f9-5b3442e95297"],
+Cell[26834, 681, 654, 17, 86, "Input",ExpressionUUID->"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
+Cell[27491, 700, 704, 18, 86, "Input",ExpressionUUID->"8df577a3-65e2-4813-ad98-ce7459a12602"],
+Cell[28198, 720, 738, 18, 93, "Input",ExpressionUUID->"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[28973, 743, 102, 0, 53, "Subsection",ExpressionUUID->"12bb7837-a566-49b6-b140-98809d145341"],
+Cell[29078, 745, 516, 10, 124, "Input",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
+Cell[29597, 757, 519, 9, 124, "Input",ExpressionUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
+Cell[30119, 768, 881, 22, 162, "Input",ExpressionUUID->"67982214-71e0-4a27-9e36-508d0ccfaa3b"],
+Cell[31003, 792, 842, 19, 143, "Input",ExpressionUUID->"51a018cb-c757-43d8-96dc-c0a1ac9aeb90"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[31882, 816, 96, 0, 53, "Subsection",ExpressionUUID->"43247520-88f8-43ae-b4c1-e92a05de8101"],
+Cell[31981, 818, 2948, 85, 219, "Input",ExpressionUUID->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
+}, Open  ]]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[34978, 909, 81, 0, 53, "Section",ExpressionUUID->"f66e8d5f-89da-464b-bd7d-1d662e63e88f"],
+Cell[35062, 911, 97, 0, 28, "Input",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
