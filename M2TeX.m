@@ -566,6 +566,7 @@ M2TeXGeneratePDF[name_, options___Rule] := M2TeXGeneratePDF[name, M2Tdocument, o
 M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	{
 		nameTemp,
+		m2tTempDir,
 		texFileTemp,
 		pdfFileTemp,
 		texFile,
@@ -577,8 +578,10 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	
 	(* The files will be compiled in the temp directory *)
 	nameTemp = "M2TeX_" <> ToString[ $KernelID ];
-	texFileTemp = FileNameJoin[{ $TemporaryDirectory, nameTemp <> ".tex" }];
-	pdfFileTemp = FileNameJoin[{ $TemporaryDirectory, nameTemp <> ".pdf" }]; 
+	m2tTempDir = FileNameJoin[{ $TemporaryDirectory, "M2TeX"}];
+	If[ !DirectoryQ[m2tTempDir], CreateDirectory[m2tTempDir] ];
+	texFileTemp = FileNameJoin[{ m2tTempDir, nameTemp <> ".tex" }];
+	pdfFileTemp = FileNameJoin[{ m2tTempDir, nameTemp <> ".pdf" }]; 
 	texFile = FileNameJoin[{ Directory[], name <> ".tex" }];
 	pdfFile = FileNameJoin[{ Directory[], name <> ".pdf" }];
 	
@@ -596,7 +599,7 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 	
 	(* Execute the LaTeX command*)
 	If[FileExistsQ[pdfFileTemp], DeleteFile[pdfFileTemp];];
-	out = RunProcess[{"pdflatex", "-halt-on-error", "--interaction=nonstopmode", texFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+	out = RunProcess[{"pdflatex", "-halt-on-error", "--interaction=nonstopmode", texFileTemp}, ProcessDirectory -> m2tTempDir];
 	
 	(* Check if pdf file was created *)
 	If[ FileExistsQ[pdfFileTemp],
@@ -612,14 +615,17 @@ M2TeXGeneratePDF[name_, environment_, OptionsPattern[]] := Module[
 			,
 	
 			(* Delete all image files in temp directory *)
-			DeleteFile[FileNames[nameTemp <> "_*.png", $TemporaryDirectory]];
+			DeleteFile[FileNames[nameTemp <> "_*.png", m2tTempDir]];
 	
 			(* Convert the pdf into png files *)
-			gs = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe";
-			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r"<>ToString[OptionValue["PNGDPI"]], "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> $TemporaryDirectory];
+			If[ $OperatingSystem == "Unix",
+				gs = "gs";,
+				gs = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe";
+			];
+			RunProcess[{gs, "-sDEVICE=pngalpha", "-dTextAlphaBits=4", "-r"<>ToString[OptionValue["PNGDPI"]], "-o", nameTemp <> "_%03d.png", pdfFileTemp}, ProcessDirectory -> m2tTempDir];
 			
 			(* Import png images *)
-			outImage = Import /@ FileNames[ nameTemp <> "_*.png", $TemporaryDirectory];
+			outImage = Import /@ FileNames[ nameTemp <> "_*.png", m2tTempDir];
 		];
 	];
 	
@@ -682,7 +688,7 @@ getErrorWarningOverfull[string_String] := Module[
 	},
 	
 	(* Split the string at the new line markers *)
-	stringLines = StringSplit[string, {"\r\n"}];
+	stringLines = StringSplit[string, {"\[NewLine]"}];
 	
 	(* return the messages *)
 	{
