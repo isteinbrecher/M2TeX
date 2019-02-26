@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     43265,       1051]
-NotebookOptionsPosition[     36703,        949]
-NotebookOutlinePosition[     37049,        964]
-CellTagsIndexPosition[     37006,        961]
+NotebookDataLength[     41575,       1048]
+NotebookOptionsPosition[     35002,        946]
+NotebookOutlinePosition[     35338,        961]
+CellTagsIndexPosition[     35295,        958]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -27,8 +27,9 @@ Cell[BoxData[{
   RowBox[{"SetDirectory", "[", 
    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], 
   ";"}], "\[IndentingNewLine]", 
- RowBox[{"<<", "M2TeX`"}]}], "Input",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-\
-27c077e1356b"],
+ RowBox[{"<<", "M2TeX`"}]}], "Input",
+ CellLabel->
+  "In[215]:=",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-27c077e1356b"],
 
 Cell[CellGroupData[{
 
@@ -36,82 +37,21 @@ Cell["Testing functions", "Section",ExpressionUUID->"00030b57-41f7-4e99-b76a-fb5
 
 Cell[BoxData[{
  RowBox[{
-  RowBox[{"testM2TexCounterTotal", "=", "0"}], ";"}], "\[IndentingNewLine]", 
+  RowBox[{"tests", "=", 
+   RowBox[{"{", "}"}]}], ";"}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{"testM2TexCounterFail", "=", "0"}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"testM2Tex", "[", 
-    RowBox[{"var1_", ",", "var2_"}], "]"}], ":=", 
-   RowBox[{"Module", "[", 
-    RowBox[{
-     RowBox[{"{", 
-      RowBox[{"temp", ",", "tempPrint"}], "}"}], ",", "\[IndentingNewLine]", 
-     RowBox[{"(", "\[IndentingNewLine]", 
-      RowBox[{
-       RowBox[{"testM2TexCounterTotal", "++"}], ";", "\[IndentingNewLine]", 
-       RowBox[{"If", "[", 
-        RowBox[{
-         RowBox[{"var1", "===", "var2"}], ",", "\[IndentingNewLine]", 
-         RowBox[{"Text", "[", 
-          RowBox[{"\"\<Pass\>\"", ",", 
-           RowBox[{"Background", "\[Rule]", "Green"}]}], "]"}], ",", 
-         "\[IndentingNewLine]", 
-         RowBox[{
-          RowBox[{"testM2TexCounterFail", "++"}], ";", "\[IndentingNewLine]", 
-          RowBox[{"Print", "[", 
-           RowBox[{"Text", "[", 
-            RowBox[{"\"\<Fail\>\"", ",", 
-             RowBox[{"Background", "\[Rule]", "Red"}]}], "]"}], "]"}], ";", 
-          "\[IndentingNewLine]", 
-          RowBox[{"temp", "=", 
-           RowBox[{"SequenceAlignment", "[", 
-            RowBox[{"var1", ",", "var2"}], "]"}]}], ";", 
-          "\[IndentingNewLine]", 
-          RowBox[{"tempPrint", "=", 
-           RowBox[{"Row", "@", 
-            RowBox[{"Flatten", "[", 
-             RowBox[{"temp", "/.", 
-              RowBox[{
-               RowBox[{"{", 
-                RowBox[{"a_", ",", "b_"}], "}"}], "\[RuleDelayed]", 
-               RowBox[{"{", 
-                RowBox[{
-                 RowBox[{"Style", "[", 
-                  RowBox[{"a", ",", "Red"}], "]"}], ",", "\"\<(\>\"", ",", 
-                 RowBox[{"Style", "[", 
-                  RowBox[{"b", ",", "Green"}], "]"}], ",", "\"\<)\>\""}], 
-                "}"}]}]}], "]"}]}]}], ";", "\[IndentingNewLine]", 
-          RowBox[{"Print", "[", 
-           RowBox[{"Grid", "[", 
-            RowBox[{
-             RowBox[{"{", 
-              RowBox[{
-               RowBox[{"{", "\"\<Expected:\>\"", "}"}], ",", 
-               RowBox[{"{", "var2", "}"}], ",", 
-               RowBox[{"{", "\"\<Got:\>\"", "}"}], ",", 
-               RowBox[{"{", "tempPrint", "}"}]}], "}"}], ",", 
-             RowBox[{"Frame", "\[Rule]", "All"}], ",", 
-             RowBox[{"Alignment", "\[Rule]", "Left"}]}], "]"}], "]"}], 
-          ";"}]}], "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
-      ")"}]}], "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"testM2TexSummary", ":=", 
-  RowBox[{"(", "\[IndentingNewLine]", 
+  RowBox[{"testM2Tex", "[", 
+   RowBox[{"var1_", ",", "var2_"}], "]"}], ":=", 
+  RowBox[{"(", 
    RowBox[{
-    RowBox[{"Print", "[", 
-     RowBox[{"\"\<Total of \>\"", "<>", 
-      RowBox[{"ToString", "[", "testM2TexCounterTotal", "]"}], "<>", 
-      "\"\< Tests!\>\""}], "]"}], ";", "\[IndentingNewLine]", 
-    RowBox[{"Print", "[", 
-     RowBox[{"\"\<    Total of \>\"", "<>", 
-      RowBox[{"ToString", "[", "testM2TexCounterFail", "]"}], "<>", 
-      "\"\< failed Tests!\>\""}], "]"}], ";", "\[IndentingNewLine]", 
-    RowBox[{"Print", "[", 
-     RowBox[{"\"\<    Total of \>\"", "<>", 
-      RowBox[{"ToString", "[", 
-       RowBox[{"testM2TexCounterTotal", "-", "testM2TexCounterFail"}], "]"}], 
-      "<>", "\"\< passed Tests!\>\""}], "]"}], ";"}], "\[IndentingNewLine]", 
-   ")"}]}]}], "Input",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
+    RowBox[{"tests", "=", 
+     RowBox[{"Append", "[", 
+      RowBox[{"tests", ",", 
+       RowBox[{"VerificationTest", "[", 
+        RowBox[{"var1", ",", "var2"}], "]"}]}], "]"}]}], ";"}], 
+   ")"}]}]}], "Input",
+ CellLabel->
+  "In[217]:=",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -133,7 +73,9 @@ Cell[BoxData[
       RowBox[{"\"\<NewLineCharacter\>\"", "\[Rule]", "\"\<\\n\>\""}]}], 
      "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", "\"\<stuff\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
+  "]"}]], "Input",
+ CellLabel->
+  "In[219]:=",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -156,16 +98,18 @@ Cell[BoxData[
         RowBox[{"\"\<<Open>\>\"", ",", "\"\<<Close>\>\""}], "}"}]}]}], 
      "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", "\"\<<Open>value<>value2<Close>\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"dcf26cb6-6ce0-48b2-\
-a163-7586284d83ae"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[220]:=",ExpressionUUID->"dcf26cb6-6ce0-48b2-a163-7586284d83ae"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
   RowBox[{
    RowBox[{
     RowBox[{"M2TeXList", "[", "None", "]"}], "//", "M2TeXToString"}], ",", 
-   "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
-ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
+   "\[IndentingNewLine]", "\"\<\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[221]:=",ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -178,8 +122,9 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"M2TeXOption", "[", "\"\<value\>\"", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<{value}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"e1f79cd5-58b9-469c-\
-83ee-6ff37e8c1db8"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[222]:=",ExpressionUUID->"e1f79cd5-58b9-469c-83ee-6ff37e8c1db8"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -193,8 +138,9 @@ Cell[BoxData[
          RowBox[{"{", 
           RowBox[{"\"\<op3\>\"", ",", "\"\<op4\>\""}], "}"}]}], "}"}]}], 
       "}"}], "]"}], "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<{value, op2, op3, op4}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
-ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
+   "\"\<{value, op2, op3, op4}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[223]:=",ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -204,8 +150,9 @@ Cell[BoxData[
      RowBox[{"{", 
       RowBox[{"\"\<optional1\>\"", ",", "\"\<optional2\>\""}], "}"}], "]"}], "//",
      "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<[optional1, optional2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",\
-ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
+   "\"\<[optional1, optional2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[224]:=",ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -229,8 +176,9 @@ Cell[BoxData[
       RowBox[{"\"\<EndCharacter\>\"", "\[Rule]", "\"\<</>\>\""}]}], 
      "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", "\"\<<\\\\>dostuff[val2]{val1}</>\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"2a27f311-5a12-43d9-\
-84e9-88a415f2f904"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[225]:=",ExpressionUUID->"2a27f311-5a12-43d9-84e9-88a415f2f904"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -253,7 +201,9 @@ Cell[BoxData[
         "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\dostuff{op1, op11}[op2, op22]{op3}\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
+  "]"}]], "Input",
+ CellLabel->
+  "In[226]:=",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -261,8 +211,9 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"M2TeXCommand", "[", "\"\<dostuff\>\"", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<\\\\dostuff\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"1ddcc0af-7ea2-41a0-\
-951d-983cd787ac2d"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[227]:=",ExpressionUUID->"1ddcc0af-7ea2-41a0-951d-983cd787ac2d"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -271,8 +222,9 @@ Cell[BoxData[
     RowBox[{"M2TeXCommand", "[", 
      RowBox[{"\"\<dostuff\>\"", ",", "\"\<opt\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<\\\\dostuff{opt}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expres\
-sionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
+   "\"\<\\\\dostuff{opt}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[228]:=",ExpressionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -284,8 +236,9 @@ Cell[BoxData[
        RowBox[{"\"\<opt\>\"", ",", "\"\<OPT\>\""}], "}"}], ",", 
       "\"\<opt2\>\""}], "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", "\"\<\\\\dostuff[opt2]{opt, OPT}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"6cd2838f-4551-417b-\
-90c5-cd7c269ed71d"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[229]:=",ExpressionUUID->"6cd2838f-4551-417b-90c5-cd7c269ed71d"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -294,8 +247,9 @@ Cell[BoxData[
     RowBox[{"M2TeXCommand", "[", 
      RowBox[{"\"\<dostuff\>\"", ",", ",", "\"\<opt2\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<\\\\dostuff[opt2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expre\
-ssionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
+   "\"\<\\\\dostuff[opt2]\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[230]:=",ExpressionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -307,7 +261,9 @@ Cell[BoxData[
        RowBox[{"\"\<opt1\>\"", ",", "\"\<opt2\>\""}], "}"}]}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\usepackage[opt1, opt2]{name}\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
+  "]"}]], "Input",
+ CellLabel->
+  "In[231]:=",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -332,8 +288,9 @@ Cell[BoxData[
       RowBox[{"\"\<EndCommand\>\"", "\[Rule]", "\"\<END\>\""}]}], 
      "\[IndentingNewLine]", "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", "\"\<START{op1}[op2]\\nEND\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"32bb3a29-86b6-43f7-\
-8feb-9227f1eb21f1"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[232]:=",ExpressionUUID->"32bb3a29-86b6-43f7-8feb-9227f1eb21f1"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -342,7 +299,9 @@ Cell[BoxData[
     RowBox[{"M2TeXEnvironment", "[", "\"\<document\>\"", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\end{document}\>\""}], "\[IndentingNewLine]",
-   "]"}]], "Input",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
+   "]"}]], "Input",
+ CellLabel->
+  "In[233]:=",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -358,8 +317,9 @@ Cell[BoxData[
        "\[IndentingNewLine]", "}"}]}], "]"}], "//", "M2TeXToString"}], ",", 
    "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}{op1}[op2]\\n\\\\end{document}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"261d7c4d-732f-482a-\
-ae3e-cf6da814a9a9"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[234]:=",ExpressionUUID->"261d7c4d-732f-482a-ae3e-cf6da814a9a9"],
 
 Cell[BoxData[{
  RowBox[{
@@ -378,8 +338,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\section{Introduction}\\nBla bla bla...\\n\\\
-\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID\
-->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
+\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[235]:=",ExpressionUUID->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
 
 Cell[BoxData[{
  RowBox[{
@@ -398,7 +359,9 @@ Cell[BoxData[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\begin{picture}\\nBla bla \
 bla...\\n\\\\end{picture}\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
-  "]"}]}], "Input",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
+  "]"}]}], "Input",
+ CellLabel->
+  "In[239]:=",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
 
 Cell[BoxData[{
  RowBox[{
@@ -421,7 +384,9 @@ Cell[BoxData[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\begin{picture}\\npicture\\n\\\\end{picture}\
 \\nBla bla bla...\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
-  "]"}]}], "Input",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
+  "]"}]}], "Input",
+ CellLabel->
+  "In[243]:=",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
 
 Cell[BoxData[{
  RowBox[{
@@ -447,7 +412,9 @@ Cell[BoxData[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\begin{picture}\\nText1\\n\\\\end{picture}\\\
 nText2\\nText3\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", 
-  "]"}]}], "Input",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
+  "]"}]}], "Input",
+ CellLabel->
+  "In[249]:=",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
 
 Cell[BoxData[{
  RowBox[{
@@ -470,8 +437,9 @@ Cell[BoxData[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\n\\\\begin{picture}\\n\\\\begin{pictureChild}\\n\
 \\\\end{pictureChild}\\n\\\\end{picture}\\ncontent\\n\\\\end{document}\>\""}],
-   "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"7310118c-10fd-\
-4d2a-a153-16d7d219c6d6"],
+   "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[257]:=",ExpressionUUID->"7310118c-10fd-4d2a-a153-16d7d219c6d6"],
 
 Cell[BoxData[{
  RowBox[{
@@ -497,8 +465,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"doc", "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{document}\\nThis is a command \\\\Text and this is in the \
-same line\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",\
-ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
+same line\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[263]:=",ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -569,8 +538,9 @@ Cell[BoxData[{
 usepackage[lf]{MinionPro}\\n% created with M2TeX\\n\\\\usepackage{package}\\n\
 \\\\usepackage{color}\\n\\\\usepackage{color2}\\n\\n\\\\begin{document}\\\
 ncontent\\n\\\\new\\n\\\\new\\n\\\\new\\n\\\\end{document}\>\""}], 
-  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"bbb7dc65-139a-4184-\
-b8b4-563e0ddb3513"]
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[268]:=",ExpressionUUID->"bbb7dc65-139a-4184-b8b4-563e0ddb3513"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -587,8 +557,9 @@ Cell[BoxData[
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\documentclass{scrartcl}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\\
 usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n\\n\\\\begin{document}\
-\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expression\
-UUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
+\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[276]:=",ExpressionUUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -601,8 +572,9 @@ border=0]{standalone}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\usepackage[utf8]{\
 inputenc}\\n\\\\usepackage{amsmath}\\n\\\\usepackage{tikz}\\n\\\\usepackage{\
 pgfplots}\\n\\\\pgfplotsset{compat=newest,tick label \
 style={font=\\\\footnotesize}}\\n\\n\\\\begin{document}\\n\\\\end{document}\>\
-\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"baf1fe11-4c62-\
-44ab-975c-9f795cdf6cdd"]
+\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[277]:=",ExpressionUUID->"baf1fe11-4c62-44ab-975c-9f795cdf6cdd"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -617,8 +589,9 @@ Cell[BoxData[
    RowBox[{
     RowBox[{"M2TeXTikZCommand", "[", "\"\<node\>\"", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", "\"\<\\\\node;\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"b4ae66dd-9f08-430e-\
-bbe8-43df92940933"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[278]:=",ExpressionUUID->"b4ae66dd-9f08-430e-bbe8-43df92940933"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -627,8 +600,9 @@ Cell[BoxData[
     RowBox[{"M2TeXTikZCommand", "[", 
      RowBox[{"\"\<node\>\"", ",", "\"\<at (0,0)\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<\\\\node at (0,0);\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expr\
-essionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
+   "\"\<\\\\node at (0,0);\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[279]:=",ExpressionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -638,7 +612,9 @@ Cell[BoxData[
      RowBox[{"\"\<node\>\"", ",", "\"\<at (0,0)\>\"", ",", "\"\<black\>\""}], 
      "]"}], "//", "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\node[black] at (0,0);\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
+  "]"}]], "Input",
+ CellLabel->
+  "In[280]:=",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -647,8 +623,9 @@ Cell[BoxData[
     RowBox[{"M2TeXTikZCommand", "[", 
      RowBox[{"\"\<node\>\"", ",", ",", "\"\<black\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
-   "\"\<\\\\node[black];\>\""}], "\[IndentingNewLine]", "]"}]], "Input",Expres\
-sionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
+   "\"\<\\\\node[black];\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[281]:=",ExpressionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -657,7 +634,9 @@ Cell[BoxData[
     RowBox[{"M2TeXTikZAxis", "[", "\"\<meins\>\"", "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{axis}[meins]\\n\\\\end{axis}\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
+  "]"}]], "Input",
+ CellLabel->
+  "In[282]:=",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -667,7 +646,9 @@ Cell[BoxData[
      RowBox[{"\"\<Log\>\"", "\[Rule]", "False"}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{axis}\\n\\\\end{axis}\>\""}], "\[IndentingNewLine]", 
-  "]"}]], "Input",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
+  "]"}]], "Input",
+ CellLabel->
+  "In[283]:=",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -677,8 +658,9 @@ Cell[BoxData[
      RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<x\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{semilogxaxis}\\n\\\\end{semilogxaxis}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"3a5f14c5-ffac-4eca-\
-9b93-a0956f8b71c5"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[284]:=",ExpressionUUID->"3a5f14c5-ffac-4eca-9b93-a0956f8b71c5"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -688,8 +670,9 @@ Cell[BoxData[
      RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<y\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{semilogyaxis}\\n\\\\end{semilogyaxis}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"f6b95aac-735a-4949-\
-98fe-00a0396648c5"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[285]:=",ExpressionUUID->"f6b95aac-735a-4949-98fe-00a0396648c5"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -699,8 +682,9 @@ Cell[BoxData[
      RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<xy\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{loglogaxis}\\n\\\\end{loglogaxis}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"b6b6965a-6084-4c20-\
-a395-990e4dab596e"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[286]:=",ExpressionUUID->"b6b6965a-6084-4c20-a395-990e4dab596e"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -710,8 +694,9 @@ Cell[BoxData[
      RowBox[{"\"\<Log\>\"", "\[Rule]", "\"\<loglog\>\""}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{loglogaxis}\\n\\\\end{loglogaxis}\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"102c4d7a-5da7-4353-\
-92f9-5b3442e95297"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[287]:=",ExpressionUUID->"102c4d7a-5da7-4353-92f9-5b3442e95297"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -729,8 +714,9 @@ Cell[BoxData[
        RowBox[{"\"\<black\>\"", ",", "\"\<white\>\""}], "}"}]}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\addplot[black, white] coordinates{%\\n(1., 3.)%\\n(2., \
-4.)%\\n};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->\
-"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
+4.)%\\n};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[288]:=",ExpressionUUID->"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -749,8 +735,9 @@ Cell[BoxData[
       RowBox[{"\"\<AddPlot\>\"", "\[Rule]", "True"}]}], "]"}], "//", 
     "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\addplot+[black, white] coordinates{%\\n(1., 3.)%\\n};\>\""}], 
-  "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->"8df577a3-65e2-4813-\
-ad98-ce7459a12602"],
+  "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[289]:=",ExpressionUUID->"8df577a3-65e2-4813-ad98-ce7459a12602"],
 
 Cell[BoxData[
  RowBox[{"testM2Tex", "[", "\[IndentingNewLine]", 
@@ -769,8 +756,9 @@ Cell[BoxData[
       RowBox[{"\"\<PostText\>\"", "\[Rule]", "\"\<node{$A$}\>\""}]}], "]"}], "//",
      "M2TeXToString"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\addplot[black, white] coordinates{%\\n(1., 3.)%\\n(2., 4.)%\\n} \
-node{$A$};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",ExpressionUUID->\
-"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
+node{$A$};\>\""}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellLabel->
+  "In[290]:=",ExpressionUUID->"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -787,7 +775,9 @@ Cell[BoxData[{
   RowBox[{
    RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\begin{doc}\\ntext\\n\\\\end{doc}\>\""}], "\[IndentingNewLine]", 
-  "]"}]}], "Input",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
+  "]"}]}], "Input",
+ CellLabel->
+  "In[291]:=",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
 
 Cell[BoxData[{
  RowBox[{"M2TeXSetGlobal", "[", "\"\<article\>\"", 
@@ -797,8 +787,9 @@ Cell[BoxData[{
    RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\documentclass{scrartcl}\\n\\n\\\\usepackage[T1]{fontenc}\\n\\\\\
 usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n\\n\\\\begin{document}\
-\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",Expressio\
-nUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
+\\n\\\\end{document}\>\""}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[294]:=",ExpressionUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
 
 Cell[BoxData[{
  RowBox[{"M2TeXSetGlobal", "[", "\"\<article\>\"", 
@@ -821,8 +812,9 @@ Cell[BoxData[{
    RowBox[{"M2TeXToStringGlobal", "[", "]"}], ",", "\[IndentingNewLine]", 
    "\"\<\\\\documentclass{scrartcl}\\n\\n% comment in \
 header\\n\\n\\\\begin{document}\\n\\\\end{document}\>\""}], 
-  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"67982214-71e0-4a27-\
-9e36-508d0ccfaa3b"],
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[296]:=",ExpressionUUID->"67982214-71e0-4a27-9e36-508d0ccfaa3b"],
 
 Cell[BoxData[{
  RowBox[{
@@ -842,8 +834,9 @@ Cell[BoxData[{
 usepackage[utf8]{inputenc}\\n\\\\usepackage{amsmath}\\n% comment in \
 header\\n% also comment in \
 header\\n\\n\\\\begin{document}\\n\\\\end{document}\>\""}], 
-  "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID->"51a018cb-c757-43d8-\
-96dc-c0a1ac9aeb90"]
+  "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[301]:=",ExpressionUUID->"51a018cb-c757-43d8-96dc-c0a1ac9aeb90"]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -934,8 +927,9 @@ Cell[BoxData[{
         RowBox[{"0.3333333333333333`", ",", "3.`"}], "}"}], ",", 
        RowBox[{"{", 
         RowBox[{"0.9999993333333334`", ",", "1.000000666667111`"}], "}"}]}], 
-      "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",ExpressionUUID\
-->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
+      "}"}]}], "}"}]}], "\[IndentingNewLine]", "]"}]}], "Input",
+ CellLabel->
+  "In[304]:=",ExpressionUUID->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
 }, Open  ]]
 }, Open  ]],
 
@@ -943,13 +937,16 @@ Cell[CellGroupData[{
 
 Cell["Summary", "Section",ExpressionUUID->"f66e8d5f-89da-464b-bd7d-1d662e63e88f"],
 
-Cell[BoxData["testM2TexSummary"], "Input",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
+Cell[BoxData[
+ RowBox[{"TestReport", "[", "tests", "]"}]], "Input",
+ CellLabel->
+  "In[307]:=",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
 }, Open  ]]
 }, Open  ]]
 },
 WindowSize->{944, 1102},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
-FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+WindowMargins->{{120, Automatic}, {Automatic, 56}},
+FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -964,93 +961,93 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[CellGroupData[{
-Cell[580, 22, 85, 0, 96, "Title",ExpressionUUID->"c45ee329-1f46-461a-9e6a-7c35b4624e4f"],
-Cell[668, 24, 236, 6, 48, "Input",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-27c077e1356b"],
+Cell[580, 22, 85, 0, 98, "Title",ExpressionUUID->"c45ee329-1f46-461a-9e6a-7c35b4624e4f"],
+Cell[668, 24, 262, 7, 55, "Input",ExpressionUUID->"bed9765d-ddaf-4341-a5f8-27c077e1356b"],
 Cell[CellGroupData[{
-Cell[929, 34, 91, 0, 67, "Section",ExpressionUUID->"00030b57-41f7-4e99-b76a-fb5ec45a8a66"],
-Cell[1023, 36, 3439, 77, 390, "Input",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
+Cell[955, 35, 91, 0, 68, "Section",ExpressionUUID->"00030b57-41f7-4e99-b76a-fb5ec45a8a66"],
+Cell[1049, 37, 519, 16, 55, "Input",ExpressionUUID->"ee5f349b-4728-4644-b063-1893198eab2c"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[4499, 118, 84, 0, 67, "Section",ExpressionUUID->"759e6fef-9f27-4ca8-9902-d3c0c854fc14"],
+Cell[1605, 58, 84, 0, 68, "Section",ExpressionUUID->"759e6fef-9f27-4ca8-9902-d3c0c854fc14"],
 Cell[CellGroupData[{
-Cell[4608, 122, 81, 0, 53, "Subsection",ExpressionUUID->"43d08db3-5c7b-4049-97cf-203e3782d810"],
-Cell[4692, 124, 584, 11, 162, "Input",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
+Cell[1714, 62, 81, 0, 55, "Subsection",ExpressionUUID->"43d08db3-5c7b-4049-97cf-203e3782d810"],
+Cell[1798, 64, 612, 13, 193, "Input",ExpressionUUID->"f593a097-d865-4cac-a0f0-26ca3daa04cc"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[5313, 140, 81, 0, 53, "Subsection",ExpressionUUID->"c3198868-0607-40eb-8bd9-ca951e4555cf"],
-Cell[5397, 142, 754, 17, 162, "Input",ExpressionUUID->"dcf26cb6-6ce0-48b2-a163-7586284d83ae"],
-Cell[6154, 161, 300, 6, 86, "Input",ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
+Cell[2447, 82, 81, 0, 55, "Subsection",ExpressionUUID->"c3198868-0607-40eb-8bd9-ca951e4555cf"],
+Cell[2531, 84, 780, 18, 193, "Input",ExpressionUUID->"dcf26cb6-6ce0-48b2-a163-7586284d83ae"],
+Cell[3314, 104, 326, 7, 101, "Input",ExpressionUUID->"65856454-b78f-490f-a87f-90ad639ad941"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[6491, 172, 84, 0, 53, "Subsection",ExpressionUUID->"cf22e51d-9ad6-4a9c-81ac-a6a0c890d803"],
-Cell[6578, 174, 322, 7, 86, "Input",ExpressionUUID->"e1f79cd5-58b9-469c-83ee-6ff37e8c1db8"],
-Cell[6903, 183, 541, 13, 86, "Input",ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
-Cell[7447, 198, 419, 9, 86, "Input",ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
+Cell[3677, 116, 84, 0, 55, "Subsection",ExpressionUUID->"cf22e51d-9ad6-4a9c-81ac-a6a0c890d803"],
+Cell[3764, 118, 348, 8, 101, "Input",ExpressionUUID->"e1f79cd5-58b9-469c-83ee-6ff37e8c1db8"],
+Cell[4115, 128, 567, 14, 101, "Input",ExpressionUUID->"4ccada2e-ecc1-41dd-a765-75bb2bd5b200"],
+Cell[4685, 144, 445, 10, 101, "Input",ExpressionUUID->"9974206f-a700-4cae-9036-cbfe8d4968d8"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[7903, 212, 85, 0, 53, "Subsection",ExpressionUUID->"c25a11d6-35b3-487e-84fb-f31c08994096"],
-Cell[7991, 214, 919, 18, 219, "Input",ExpressionUUID->"2a27f311-5a12-43d9-84e9-88a415f2f904"],
-Cell[8913, 234, 1015, 21, 219, "Input",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
-Cell[9931, 257, 329, 7, 86, "Input",ExpressionUUID->"1ddcc0af-7ea2-41a0-951d-983cd787ac2d"],
-Cell[10263, 266, 371, 8, 86, "Input",ExpressionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
-Cell[10637, 276, 473, 11, 86, "Input",ExpressionUUID->"6cd2838f-4551-417b-90c5-cd7c269ed71d"],
-Cell[11113, 289, 378, 8, 86, "Input",ExpressionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
-Cell[11494, 299, 452, 10, 86, "Input",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
+Cell[5167, 159, 85, 0, 55, "Subsection",ExpressionUUID->"c25a11d6-35b3-487e-84fb-f31c08994096"],
+Cell[5255, 161, 945, 19, 262, "Input",ExpressionUUID->"2a27f311-5a12-43d9-84e9-88a415f2f904"],
+Cell[6203, 182, 1043, 23, 262, "Input",ExpressionUUID->"c57704bf-345c-47c8-a6f7-3aa64927e26b"],
+Cell[7249, 207, 355, 8, 101, "Input",ExpressionUUID->"1ddcc0af-7ea2-41a0-951d-983cd787ac2d"],
+Cell[7607, 217, 397, 9, 101, "Input",ExpressionUUID->"41c44315-d9b0-41d1-8091-25f5356121bb"],
+Cell[8007, 228, 499, 12, 101, "Input",ExpressionUUID->"6cd2838f-4551-417b-90c5-cd7c269ed71d"],
+Cell[8509, 242, 404, 9, 101, "Input",ExpressionUUID->"7b1ce4b2-9c0c-46d6-a47c-2bec3cc028f2"],
+Cell[8916, 253, 480, 12, 101, "Input",ExpressionUUID->"11783a99-98ff-46bb-b23a-8f69b0f1646a"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[11983, 314, 89, 0, 53, "Subsection",ExpressionUUID->"6bf20517-ef3e-44f6-9366-357c43e0dd74"],
-Cell[12075, 316, 957, 19, 238, "Input",ExpressionUUID->"32bb3a29-86b6-43f7-8feb-9227f1eb21f1"],
-Cell[13035, 337, 364, 7, 86, "Input",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
-Cell[13402, 346, 658, 15, 143, "Input",ExpressionUUID->"261d7c4d-732f-482a-ae3e-cf6da814a9a9"],
-Cell[14063, 363, 806, 18, 143, "Input",ExpressionUUID->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
-Cell[14872, 383, 779, 17, 143, "Input",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
-Cell[15654, 402, 989, 21, 181, "Input",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
-Cell[16646, 425, 1170, 24, 219, "Input",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
-Cell[17819, 451, 1049, 22, 200, "Input",ExpressionUUID->"7310118c-10fd-4d2a-a153-16d7d219c6d6"],
-Cell[18871, 475, 1131, 25, 162, "Input",ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
+Cell[9433, 270, 89, 0, 55, "Subsection",ExpressionUUID->"6bf20517-ef3e-44f6-9366-357c43e0dd74"],
+Cell[9525, 272, 983, 20, 285, "Input",ExpressionUUID->"32bb3a29-86b6-43f7-8feb-9227f1eb21f1"],
+Cell[10511, 294, 392, 9, 101, "Input",ExpressionUUID->"2911ceb4-2a13-4925-90bf-0bf39dcbf463"],
+Cell[10906, 305, 684, 16, 170, "Input",ExpressionUUID->"261d7c4d-732f-482a-ae3e-cf6da814a9a9"],
+Cell[11593, 323, 832, 19, 170, "Input",ExpressionUUID->"c88f3418-ace6-4399-a70f-ced37baf8fd7"],
+Cell[12428, 344, 807, 19, 170, "Input",ExpressionUUID->"d0807506-5fd4-4208-a1d3-ff5452d8ad74"],
+Cell[13238, 365, 1017, 23, 239, "Input",ExpressionUUID->"c15b0a05-a150-4100-8a23-1129cc529c4d"],
+Cell[14258, 390, 1198, 26, 262, "Input",ExpressionUUID->"eb154338-2a1d-40a3-b7aa-316509055374"],
+Cell[15459, 418, 1075, 23, 239, "Input",ExpressionUUID->"7310118c-10fd-4d2a-a153-16d7d219c6d6"],
+Cell[16537, 443, 1157, 26, 193, "Input",ExpressionUUID->"c99d3c88-424b-4ac1-8d66-ea508033a37f"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[20039, 505, 86, 0, 53, "Subsection",ExpressionUUID->"8b394c00-5686-4666-9f11-f7c93024accf"],
-Cell[20128, 507, 2732, 65, 409, "Input",ExpressionUUID->"bbb7dc65-139a-4184-b8b4-563e0ddb3513"]
+Cell[17731, 474, 86, 0, 55, "Subsection",ExpressionUUID->"8b394c00-5686-4666-9f11-f7c93024accf"],
+Cell[17820, 476, 2758, 66, 492, "Input",ExpressionUUID->"bbb7dc65-139a-4184-b8b4-563e0ddb3513"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[22897, 577, 95, 0, 53, "Subsection",ExpressionUUID->"116fed8c-18a3-44b8-99cc-060f1fa38771"],
-Cell[22995, 579, 104, 0, 34, "Text",ExpressionUUID->"020a5e28-92dd-4507-92dc-e4b9b038761c"],
-Cell[23102, 581, 489, 9, 105, "Input",ExpressionUUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
-Cell[23594, 592, 650, 12, 143, "Input",ExpressionUUID->"baf1fe11-4c62-44ab-975c-9f795cdf6cdd"]
+Cell[20615, 547, 95, 0, 55, "Subsection",ExpressionUUID->"116fed8c-18a3-44b8-99cc-060f1fa38771"],
+Cell[20713, 549, 104, 0, 35, "Text",ExpressionUUID->"020a5e28-92dd-4507-92dc-e4b9b038761c"],
+Cell[20820, 551, 515, 10, 124, "Input",ExpressionUUID->"f23ab7c3-c70a-4fc0-86d7-07c885f74900"],
+Cell[21338, 563, 676, 13, 170, "Input",ExpressionUUID->"baf1fe11-4c62-44ab-975c-9f795cdf6cdd"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[24281, 609, 87, 0, 53, "Subsection",ExpressionUUID->"2bc271d3-fc18-43b8-b795-8256b46ba1c9"],
-Cell[24371, 611, 87, 0, 34, "Text",ExpressionUUID->"962fc07f-b0fd-4893-b383-6e514311d13f"],
-Cell[24461, 613, 328, 7, 86, "Input",ExpressionUUID->"b4ae66dd-9f08-430e-bbe8-43df92940933"],
-Cell[24792, 622, 379, 8, 86, "Input",ExpressionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
-Cell[25174, 632, 410, 8, 86, "Input",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
-Cell[25587, 642, 379, 8, 86, "Input",ExpressionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
-Cell[25969, 652, 357, 7, 86, "Input",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
-Cell[26329, 661, 384, 8, 86, "Input",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
-Cell[26716, 671, 406, 9, 86, "Input",ExpressionUUID->"3a5f14c5-ffac-4eca-9b93-a0956f8b71c5"],
-Cell[27125, 682, 406, 9, 86, "Input",ExpressionUUID->"f6b95aac-735a-4949-98fe-00a0396648c5"],
-Cell[27534, 693, 403, 9, 86, "Input",ExpressionUUID->"b6b6965a-6084-4c20-a395-990e4dab596e"],
-Cell[27940, 704, 407, 9, 86, "Input",ExpressionUUID->"102c4d7a-5da7-4353-92f9-5b3442e95297"],
-Cell[28350, 715, 654, 17, 86, "Input",ExpressionUUID->"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
-Cell[29007, 734, 704, 18, 86, "Input",ExpressionUUID->"8df577a3-65e2-4813-ad98-ce7459a12602"],
-Cell[29714, 754, 738, 18, 93, "Input",ExpressionUUID->"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
+Cell[22051, 581, 87, 0, 55, "Subsection",ExpressionUUID->"2bc271d3-fc18-43b8-b795-8256b46ba1c9"],
+Cell[22141, 583, 87, 0, 35, "Text",ExpressionUUID->"962fc07f-b0fd-4893-b383-6e514311d13f"],
+Cell[22231, 585, 354, 8, 101, "Input",ExpressionUUID->"b4ae66dd-9f08-430e-bbe8-43df92940933"],
+Cell[22588, 595, 405, 9, 101, "Input",ExpressionUUID->"f73aa46e-d56f-4093-910e-94f2dd6bc800"],
+Cell[22996, 606, 438, 10, 101, "Input",ExpressionUUID->"2edac984-6d51-483b-ba16-090da873ed48"],
+Cell[23437, 618, 405, 9, 101, "Input",ExpressionUUID->"744c631c-b91d-43c0-92dd-dc5f920cc47b"],
+Cell[23845, 629, 385, 9, 101, "Input",ExpressionUUID->"fcb6bb0d-2960-4aba-a894-87abb5f11ea9"],
+Cell[24233, 640, 412, 10, 101, "Input",ExpressionUUID->"8f18a93a-3a92-4443-a91d-5ead2c40966a"],
+Cell[24648, 652, 432, 10, 101, "Input",ExpressionUUID->"3a5f14c5-ffac-4eca-9b93-a0956f8b71c5"],
+Cell[25083, 664, 432, 10, 101, "Input",ExpressionUUID->"f6b95aac-735a-4949-98fe-00a0396648c5"],
+Cell[25518, 676, 429, 10, 101, "Input",ExpressionUUID->"b6b6965a-6084-4c20-a395-990e4dab596e"],
+Cell[25950, 688, 433, 10, 101, "Input",ExpressionUUID->"102c4d7a-5da7-4353-92f9-5b3442e95297"],
+Cell[26386, 700, 680, 18, 101, "Input",ExpressionUUID->"256fa141-4bfc-4615-a52d-be5b3cbc1ad1"],
+Cell[27069, 720, 730, 19, 101, "Input",ExpressionUUID->"8df577a3-65e2-4813-ad98-ce7459a12602"],
+Cell[27802, 741, 764, 19, 101, "Input",ExpressionUUID->"842d8a60-b1e7-4fd6-966f-9550ef01cbc2"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[30489, 777, 102, 0, 53, "Subsection",ExpressionUUID->"12bb7837-a566-49b6-b140-98809d145341"],
-Cell[30594, 779, 516, 10, 124, "Input",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
-Cell[31113, 791, 519, 9, 124, "Input",ExpressionUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
-Cell[31635, 802, 881, 22, 162, "Input",ExpressionUUID->"67982214-71e0-4a27-9e36-508d0ccfaa3b"],
-Cell[32519, 826, 842, 19, 143, "Input",ExpressionUUID->"51a018cb-c757-43d8-96dc-c0a1ac9aeb90"]
+Cell[28603, 765, 102, 0, 55, "Subsection",ExpressionUUID->"12bb7837-a566-49b6-b140-98809d145341"],
+Cell[28708, 767, 544, 12, 147, "Input",ExpressionUUID->"ca23df19-1be0-431d-b077-20f1ac5cbdd1"],
+Cell[29255, 781, 545, 10, 147, "Input",ExpressionUUID->"75cc596b-def7-4519-a0b7-a12136535343"],
+Cell[29803, 793, 907, 23, 193, "Input",ExpressionUUID->"67982214-71e0-4a27-9e36-508d0ccfaa3b"],
+Cell[30713, 818, 868, 20, 193, "Input",ExpressionUUID->"51a018cb-c757-43d8-96dc-c0a1ac9aeb90"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[33398, 850, 96, 0, 53, "Subsection",ExpressionUUID->"43247520-88f8-43ae-b4c1-e92a05de8101"],
-Cell[33497, 852, 2948, 85, 219, "Input",ExpressionUUID->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
+Cell[31618, 843, 96, 0, 55, "Subsection",ExpressionUUID->"43247520-88f8-43ae-b4c1-e92a05de8101"],
+Cell[31717, 845, 2974, 86, 285, "Input",ExpressionUUID->"e26ff596-cd8c-42e5-a2c7-84f3e67248ac"]
 }, Open  ]]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[36494, 943, 81, 0, 67, "Section",ExpressionUUID->"f66e8d5f-89da-464b-bd7d-1d662e63e88f"],
-Cell[36578, 945, 97, 0, 28, "Input",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
+Cell[34740, 937, 81, 0, 68, "Section",ExpressionUUID->"f66e8d5f-89da-464b-bd7d-1d662e63e88f"],
+Cell[34824, 939, 150, 3, 31, "Input",ExpressionUUID->"c50f33ba-7648-4193-bfcf-ad9228cd6d52"]
 }, Open  ]]
 }, Open  ]]
 }
