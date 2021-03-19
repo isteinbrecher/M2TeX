@@ -321,6 +321,8 @@ M2TeXCloseActiveEnvironment[parent_] := Module[
 ClearAll[M2TeXCloseAll];
 SetAttributes[M2TeXCloseAll, HoldFirst];
 M2TeXCloseAll[parent_] := Module[{}, parent[[1, Key["ActiveContent"] ]] = Sequence[1, Key["Content"]]; ];
+M2TeXCloseAll[] := M2TeXCloseAll[M2Tdocument];
+
 
 (*** Overloads for document ***)
 M2TeXAddToEnvironment[content_] := M2TeXAddToEnvironment[M2Tdocument, content]; 
