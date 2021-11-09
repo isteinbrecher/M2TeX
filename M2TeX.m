@@ -34,6 +34,8 @@ M2TeXTikZCommand::usage="TODO";
 M2TeXTikZAxis::usage="TODO";
 M2TeXTikZPlot::usage="TODO";
 
+M2TeXTikZExportCode::usage="TODO";
+
 M2TeXGeneratePDF::usage="TODO";
 
 M2TeXPlotToPoints::usage="TODO";
@@ -50,6 +52,15 @@ M2Tdocument;
 (*** A counter for how much data points contain non numeric values ***)
 M2TNonNumericCounter = 0;
 M2TPrintNonNumeric = True;
+
+(*** Flags for storing tikz data ***)
+M2TTikZExportResetFlags[] := (
+	M2TTikZExportDataFile = False;
+	M2TTikZExportDataPath = "";
+	M2TTikZExportBaseName = "";
+	M2TTikZExportCounter = 1;
+	)
+M2TTikZExportResetFlags[];
 
 
 (********* Helper and compatibility functions *********)
@@ -523,10 +534,10 @@ M2TeXTikZPlot[table_, par_, OptionsPattern[]] := Module[{tempData},
 	(* return plot command *)
 	M2TTikZPlot[tempData]
 ];
-M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
-	
-	(* Get the coordinates *)
-	string = "coordinates{%\n";
+M2TeXToString[M2TTikZPlot[data_]] := Module[{dataFormated, string, dataTemp, dataName, dataPath, tempString},
+
+	(* Get a version of the table where the numbers are formated as strings *)
+	dataFormated = {};
 	Do[
 		(* Check if both values are numeric, otherwise skip the row *)
 		If[ MemberQ[NumericQ /@ coord, False],
@@ -535,10 +546,34 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
 				Print["Non numeric value!"],
 				M2TNonNumericCounter++;
 			],
-			string = string <> "(" <> ToString@CForm[N[coord[[1]] ]] <> ", " <> ToString@CForm[N[coord[[2]] ]] <> ")%\n";
+			AppendTo[dataFormated, {ToString@CForm[N[coord[[1]] ]], ToString@CForm[N[coord[[2]] ]]}];
 		];
 	,{coord, data["Table"]}];
-	string = string <> "}";
+	
+	(* Check if the data should be written directly to the tex file or in a separate file *)
+	If[M2TTikZExportDataFile == True,
+		
+		(* Save data to an individual file *)
+		dataName = M2TTikZExportBaseName <> "_data_" <> ToString[M2TTikZExportCounter] <> ".dat";
+		dataPath = If[ M2TTikZExportDataPath == "",
+			dataName
+			,
+			FileNameJoin[{M2TTikZExportDataPath, dataName}]
+		];
+		Export[dataName, dataFormated, "Table", "FieldSeparators" -> " "];
+		string = "table{" <> dataPath  <> "}";
+		
+		(* Increase counter *)
+		M2TTikZExportCounter = M2TTikZExportCounter + 1;
+		
+		,
+		(* Add data directly to the tex file *)
+		string = "coordinates{%\n";
+		Do[string = string <> "(" <> coord[[1]] <> ", " <> coord[[2]] <> ")%\n";
+			,{coord, dataFormated}];
+		string = string <> "}";
+		
+	];
 	
 	(* check if there is a PostText *)
 	tempString = M2TeXToString[data["PostText"]];
@@ -553,6 +588,40 @@ M2TeXToString[M2TTikZPlot[data_]] := Module[{string, dataTemp, tempString},
 	M2TeXToString[M2TTikZCommand[dataTemp]]
 ];
 
+
+
+(*** Export the Tikz data to code. ***)
+Options[M2TeXTikZExportCode] = {
+	"DataPath" -> ""
+};
+M2TeXTikZExportCode[M2TEnvironment[data_], name_, OptionsPattern[]] := Module[
+	{
+		texName
+	},
+	
+	(* Check that the environment is Tikz*)
+	If[
+		data["Name"] != "tikzpicture",
+		Print["M2TeXTikZExportCode only implemented for tikzpicture environment"];
+		Return[];
+	];
+	
+	(* Make sure counters are reset *)
+	M2TTikZExportResetFlags[];
+	
+	(* Set the options for the export of plot data *)
+	M2TTikZExportDataFile = True;
+	M2TTikZExportDataPath = OptionValue["DataPath"];
+	M2TTikZExportBaseName = name;
+	
+	(* Get the Tikz code and save it to disk *)
+	texName = name <> ".tex";
+	Export[texName, M2TeXToString[M2TEnvironment[data]], "Text" ];
+	Print["TikZ Code written to: " <> texName];
+		
+	(* Reset the flags, so all other print functions will put the data directly in the tex code *)
+	M2TTikZExportResetFlags[];
+];
 
 
 
