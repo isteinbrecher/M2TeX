@@ -5,7 +5,12 @@
 (*M2TeX testing*)
 
 
-SetDirectory[NotebookDirectory[]];
+testingDir=FileNameJoin[{NotebookDirectory[], "testing_temp"}];
+If[DirectoryQ[testingDir],DeleteDirectory[testingDir, DeleteContents->True]];
+CreateDirectory[testingDir];
+
+
+SetDirectory[testingDir];
 <<M2TeX`
 
 
